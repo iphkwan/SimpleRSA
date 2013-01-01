@@ -11,7 +11,7 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello RSA project!\n";
+    cout << "Hello World RSA project!\n";
 
     // test BigInt
     BigInt a, b, c;
