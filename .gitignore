@@ -1,2 +1,4 @@
 simplersa
 *.o
+*~
+*.swp
