@@ -41,11 +41,11 @@ class BigInt
             return res;
         }
 
-        bool read(string buf) {
+        void read(string buf) {
             int w, u, len = buf.length();
             memset(this, 0, sizeof(BigInt));
             if (len == 1 && buf[0] == '0')
-                return 1;
+                return;
             bool is_positive = true;
             if (buf[0] == '-') {
                 is_positive = false;
@@ -65,14 +65,14 @@ class BigInt
                 v[ln++] = u;
             if (!is_positive)
                 v[ln - 1] = - v[ln - 1];
-            return 1;
+            return;
         }
-        bool readBinaryNum(string buf) {
+        void readBinaryNum(string buf) {
             // Require Positive Number !!!
             int i, len = buf.length();
             memset(this, 0, sizeof(BigInt));
             if (len == 1 && buf[0] == '0')
-                return 1;
+                return;
             BigInt p(1), res(0), bs(2);
             for (i = len - 1; i >= 0; i--) {
                 if (buf[i] == '1')
@@ -80,7 +80,7 @@ class BigInt
                 p = p * bs;
             }
             *this = res;
-            return 1;
+            return;
         }
 
         void write() {
