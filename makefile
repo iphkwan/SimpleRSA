@@ -11,4 +11,4 @@ simplersa: main.o
 main.o: main.cpp 
 
 clean:
-	rm a.out
+	rm -f simplersa main.o
