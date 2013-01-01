@@ -27,6 +27,7 @@ class BigInt
         }
         friend bool operator < (const BigInt& a, const BigInt& b);
         friend bool operator <= (const BigInt& a, const BigInt& b);
+        friend bool operator == (const BigInt& a, const BigInt& b);
         friend BigInt operator + (const BigInt& a, const BigInt& b);
         friend BigInt operator - (const BigInt& a, const BigInt& b);
         friend BigInt operator * (const BigInt& a, const BigInt& b);
@@ -66,6 +67,21 @@ class BigInt
                 v[ln - 1] = - v[ln - 1];
             return 1;
         }
+        bool readBinaryNum(string buf) {
+            // Require Positive Number !!!
+            int i, len = buf.length();
+            memset(this, 0, sizeof(BigInt));
+            if (len == 1 && buf[0] == '0')
+                return 1;
+            BigInt p(1), res(0), bs(2);
+            for (i = len - 1; i >= 0; i--) {
+                if (buf[i] == '1')
+                    res = res + p;
+                p = p * bs;
+            }
+            *this = res;
+            return 1;
+        }
 
         void write() {
             int i;
@@ -96,6 +112,15 @@ bool operator < (const BigInt& a, const BigInt& b) {
 
 bool operator <= (const BigInt& a, const BigInt& b) {
     return !(b < a);
+}
+
+bool operator == (const BigInt& a, const BigInt& b) {
+    if (a.ln != b.ln)
+        return false;
+    for (int i = a.ln - 1; i >=0; i--)
+        if (a.v[i] != b.v[i])
+            return false;
+    return true;
 }
 
 BigInt operator + (const BigInt& a, const BigInt& b) {
@@ -160,6 +185,10 @@ BigInt operator * (const BigInt& a, const BigInt& b) {
 
 BigInt operator % (const BigInt& aa, const BigInt& b) {
     // b > 0
+    if (b == BigInt(1)) {
+        BigInt res(1);
+        return res;
+    }
     BigInt a = aa;
     while (a < BigInt(0))
         a = a + b;

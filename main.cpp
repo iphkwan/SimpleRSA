@@ -43,5 +43,10 @@ int main()
         cout << "True!\n";
     else
         cout << "False!\n";
+    cout << "please input binary positive number:\n";
+    cin >> tmp;
+    c.readBinaryNum(tmp);
+    cout << "c = ";
+    c.write();
     return 0;
 }
