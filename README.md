@@ -38,7 +38,7 @@ step.4. 将m重新整合，还原信息流并显示
 
 详细描述可以参考[这里](http://zh.wikipedia.org/wiki/RSA%E5%8A%A0%E5%AF%86%E6%BC%94%E7%AE%97%E6%B3%95)
 
-### OAEP（最优非对称加密填充）
+### OAEP（Optimal Asymmetric Encryption Padding，最优非对称加密填充）
 
 > 在RSA加密前进行OAEP过程
 
