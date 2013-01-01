@@ -1,4 +1,14 @@
-all:
-	g++ main.cpp BigInt.h Key.h PrimeGen.h RSA.h OAEP.h -o a.out
+CFLAGS = -c -Iinclude
+
+all: simplersa
+
+simplersa: main.o
+	$(CXX) $^ -o $@
+
+%.o: %.cpp
+	$(CXX) $(CFLAGS) $^ -o $@
+
+main.o: main.cpp 
+
 clean:
 	rm a.out
