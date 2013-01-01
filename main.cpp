@@ -11,9 +11,12 @@ using namespace std;
 
 int main()
 {
-    cout << "Hello World RSA project!\n";
+    cout << "Hello RSA project!\n";
 
     // test BigInt
+    cout << "------------------------\n";
+    cout << "This is BigInt test.\n";
+    cout << "------------------------\n";
     BigInt a, b, c;
     string tmp;
     cout << "please input a:\n";
@@ -48,5 +51,6 @@ int main()
     c.readBinaryNum(tmp);
     cout << "c = ";
     c.write();
+    cout << "------------------------\n";
     return 0;
 }
