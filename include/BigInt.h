@@ -548,8 +548,10 @@ void BigInt::Random(int digNum)
 	for(int i=0; i<digNum/32; i++)
 		//由于RAND()最大只能产生0X7FFF的数,为了能产生32位的随机数,需要
 			//3次RAND()操作
-				data[i]=(rand() << 17 ) + ( rand() << 2 )+ rand() % 4;
+		data[i]=((rand() % 0x7FFFF) << 17 ) + ( (rand() % 0x7FFFF) << 2 )+ rand() % 4;
 	data[digNum/32-1]=data[digNum/32-1]|0x80000000;
+    data[0] = rand()|0x80000000;
+    //cout << "data = " << data[0] << endl;
 }
 
 
@@ -561,6 +563,7 @@ void BigInt::Randomsmall(int digNum)
 			//3次RAND()操作
 				data[i]=(rand() << 17 ) + ( rand() << 2 )+ rand() % 4;
 	data[digNum/128-1]=data[digNum/32-1]|0x80000000;
+    data[0] = rand() | 0x80000000;
 }
 
 //将大数以16进制显示到屏幕上
@@ -751,16 +754,18 @@ void GenPrime(BigInt& n,int digNum)
 	int i=0;
 	BigInt divisor;
 	const int length=sizeof(prime)/sizeof(int);
-
 	while(i!=length)
-	{		
+	{
+        //n =10000;
+        //n.displayByHex();
 		n.Random(digNum);
 		while(!n.IsOdd())
 			n.Random(digNum);
 		i=0;
 		for(; i<length; i++)
 		{
-			divisor=BigInt(prime[i]);
+            //cout << "primeloop";
+			divisor=prime[i];
 			if((n%divisor)==0)
 				break;
 		}

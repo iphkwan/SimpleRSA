@@ -7,12 +7,20 @@
 #include "Key.h"
 #include "RSA.h"
 #include "OAEP.h"
+#include <ctime>
 using namespace std;
 
+void test_BigInt();
+void test_RSA();
 int main()
 {
     cout << "Hello RSA project!\n";
+    //test_BigInt();
+    test_RSA();
+    return 0;
+}
 
+void test_BigInt() {
     // test BigInt
     cout << "------------------------\n";
     cout << "This is BigInt test.\n";
@@ -52,5 +60,29 @@ int main()
     cout << "c = ";
     cout << c << endl;
     cout << "------------------------\n";
-    return 0;
+}
+
+void test_RSA() {
+    srand((unsigned) time(NULL));
+
+    int digNum;
+    cout << "input the model (512, 768, 1024?):\n";
+    cin >> digNum;
+    RSA rsa(digNum);
+    BigInt test, n, e;
+    rsa.getPublicKey(n, e);
+
+    test.Random(digNum);
+    while (!(test < n))
+        test.Random(digNum);
+    cout << "test message: ";
+    test.displayByHex();
+
+    BigInt encp = rsa.encrypt(test);
+    cout << "after encrypt: ";
+    encp.displayByHex();
+
+    cout << "after decrypt: ";
+    BigInt decp = rsa.decrypt(encp);
+    decp.displayByHex();
 }
