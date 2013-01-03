@@ -1,9 +1,9 @@
-#ifndef  BIGINT_H_
+#ifndef BIGINT_H_
 #define BIGINT_H_
 #include <iostream>
 #include <string>
 #include <stdlib.h>
-#include "primer.h"
+#include "globalData.h"
 using namespace std;
 const int size=64+1;
 
@@ -192,7 +192,7 @@ BigInt operator+ (const BigInt& a, const BigInt& b)
 {
 	BigInt result;
 	//64位数据,存放每两位数相加的临时和
-	unsigned __int64 sum;    
+	unsigned long long sum;    
 	//carry为进位标志,sub为当两数符号相异时,存放每两位数相减的临时差
 	unsigned int carry=0,sub;  
 	//取a,b中长度较长的长度
@@ -204,7 +204,7 @@ BigInt operator+ (const BigInt& a, const BigInt& b)
 		//每一位进行竖式相加
 		for(int i=0; i<length; i++)
 		{
-			sum=(unsigned __int64)a.data[i]+b.data[i]+carry;
+			sum=(unsigned long long)a.data[i]+b.data[i]+carry;
 			result.data[i]=(unsigned int)sum;
 			//sum的高位为进位
 			carry=(sum >> 32);
@@ -243,7 +243,7 @@ BigInt operator+ (const BigInt& a, const BigInt& b)
 			else
 			{
 				//借位减
-				result.data[i]=(unsigned __int64)tempa.data[i]+(1<<32)-sub;
+				result.data[i]=(unsigned long long)tempa.data[i]+(unsigned long long)(1<<32)-sub;
 				carry=1;
 			}
 		}
@@ -257,7 +257,7 @@ BigInt operator- (const BigInt& a, const BigInt& b)
 {
 	BigInt result;
 	//64位数据,存放每两位数相加的临时和
-	unsigned __int64 sum;
+	unsigned long long sum;
 	//carry为进位标志,sub为当两数符号相异时,存放每两位数相减的临时差
 	unsigned int carry=0,sub;
 
@@ -291,7 +291,7 @@ BigInt operator- (const BigInt& a, const BigInt& b)
 			else
 			{
 				//借位减
-				result.data[i]=(unsigned __int64)tempa.data[i]+(1<<32)-sub;
+				result.data[i]=(unsigned long long)tempa.data[i]+(unsigned long long)(1<<32)-sub;
 				carry=1;
 			}
 		}
@@ -305,7 +305,7 @@ BigInt operator- (const BigInt& a, const BigInt& b)
 		//每一位进行竖式相加
 		for(int i=0; i<size; i++)
 		{
-			sum=(unsigned __int64)a.data[i]+b.data[i]+carry;
+			sum=(unsigned long long)a.data[i]+b.data[i]+carry;
 			result.data[i]=(unsigned int)sum;
 			//sum的高位为进位
 			carry=(sum >> 32);
@@ -329,13 +329,13 @@ BigInt operator* (const BigInt& a, const unsigned int& b)
 {
 	BigInt result;
 	//存放B乘以A的每一位的临时积
-	unsigned __int64 sum;
+	unsigned long long sum;
 	//存放进位
 	unsigned int carry=0;
 
 	for(int i=0; i<size; i++)
 	{
-		sum=((unsigned __int64)a.data[i])*b+carry;
+		sum=((unsigned long long)a.data[i])*b+carry;
 		result.data[i]=(unsigned int)sum;
 		//进位在SUM的高位中
 		carry=(sum>>32);
@@ -350,7 +350,7 @@ BigInt operator* (const BigInt& a, const BigInt& b)
 	//last存放竖式上一行的积,temp存放当前行的积
 	BigInt result,last,temp;    
 	//sum存放当前行带进位的积
-	unsigned __int64 sum;
+	unsigned long long sum;
 	//存放进位
 	unsigned int carry;
 
@@ -361,7 +361,7 @@ BigInt operator* (const BigInt& a, const BigInt& b)
 		//B的每一位与A相乘
 		for(int j=0; j<a.GetLength()+1; j++)
 		{
-			sum=((unsigned __int64)a.data[j])*(b.data[i])+carry;
+			sum=((unsigned long long)a.data[j])*(b.data[i])+carry;
 			if((i+j)<size)
 				temp.data[i+j]=(unsigned int)sum;
 			carry=(sum>>32);
@@ -421,7 +421,7 @@ BigInt operator/ (const BigInt& a, const BigInt& b)
 		//二分查找法查找试商
 		while(low<high)
 		{
-			mul=(((unsigned __int64)high)+low)/2;			
+			mul=(((unsigned long long)high)+low)/2;			
 			sub=(b*mul);
 			subsequent=(b*(mul+1));
 
@@ -503,7 +503,7 @@ BigInt operator% (const BigInt& a, const BigInt& b)
 
 		while(low<=high)
 		{
-			mul=(((unsigned __int64)high)+low)/2;
+			mul=(((unsigned long long)high)+low)/2;
 			sub=(b*mul);
 			subsequent=(b*(mul+1));
 
@@ -567,7 +567,7 @@ void BigInt::Randomsmall(int digNum)
 void BigInt::displayByHex() const
 {
 	unsigned int temp,result;
-	unsigned int and=0xf0000000;
+	unsigned int filter=0xf0000000;
 	string resStr;
 	for(int i=GetLength()-1;i>=0 ;i--)
 	{
@@ -575,7 +575,7 @@ void BigInt::displayByHex() const
 		//大数的每一位数字转换成16进制输出
 		for(int j=0; j<8; j++)
 		{
-			result=temp&and;
+			result=temp&filter;
 			result=(result>>28);
 			temp=(temp<<4);
 			if(result>=0&&result<=9)
@@ -618,7 +618,7 @@ void BigInt::displayByHex() const
 void BigInt::Output(ostream& out) const
 {
 	unsigned int temp,result;
-	unsigned int and=0xf0000000;
+	unsigned int filter=0xf0000000;
 	string resStr;
 	for(int i=GetLength()-1;i>=0 ;i--)
 	{
@@ -626,7 +626,7 @@ void BigInt::Output(ostream& out) const
 		//大数的每一位数字转换成16进制输出
 		for(int j=0; j<8; j++)
 		{
-			result=temp&and;
+			result=temp&filter;
 			result=(result>>28);
 			temp=(temp<<4);
 			if(result>=0&&result<=9)
@@ -760,7 +760,7 @@ void GenPrime(BigInt& n,int digNum)
 		i=0;
 		for(; i<length; i++)
 		{
-			divisor=prime[i];
+			divisor=BigInt(prime[i]);
 			if((n%divisor)==0)
 				break;
 		}

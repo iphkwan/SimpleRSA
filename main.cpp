@@ -21,26 +21,26 @@ int main()
     string tmp;
     cout << "please input a:\n";
     cin >> tmp;
-    a.read(tmp);
+    a.readBinaryNum(tmp);
     cout << "please input b:\n";
     cin >> tmp;
-    b.read(tmp);
+    b.readBinaryNum(tmp);
     cout << "a = ";
-    a.write();
+    cout << a << endl;
     cout << "b = ";
-    b.write();
+    cout << b << endl;
     cout << "a + b = ";
     c = a + b;
-    c.write();
+    cout << c << endl;
     cout << "a * b = ";
     c = a * b;
-    c.write();
+    cout << c << endl;
     cout << "a - b = ";
     c = a - b;
-    c.write();
+    cout << c << endl;
     cout << "a % b = ";
     c = a % b;
-    c.write();
+    cout << c << endl;
     cout << "a < b ? ";
     if (a < b)
         cout << "True!\n";
@@ -50,7 +50,7 @@ int main()
     cin >> tmp;
     c.readBinaryNum(tmp);
     cout << "c = ";
-    c.write();
+    cout << c << endl;
     cout << "------------------------\n";
     return 0;
 }
