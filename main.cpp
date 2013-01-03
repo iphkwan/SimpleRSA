@@ -66,12 +66,16 @@ void test_RSA() {
     srand((unsigned) time(NULL));
 
     int digNum;
-    cout << "input the model (512, 768, 1024?):\n";
+    cout << "input the model (512, 768, 1024? it's not less than 256):\n";
     cin >> digNum;
+    if (digNum < 256) {
+        cout << "It may leads error.\n";
+        return;
+    }
     RSA rsa(digNum);
     BigInt test, n, e;
     rsa.getPublicKey(n, e);
-
+    cout << "Generating test message...\n";
     test.Random(digNum);
     while (!(test < n))
         test.Random(digNum);
