@@ -1,216 +1,824 @@
-#ifndef BIGINT_H_
+#ifndef  BIGINT_H_
 #define BIGINT_H_
-
 #include <iostream>
-#include <cstdio>
 #include <string>
-#include <cmath>
-#include <string.h>
+#include <stdlib.h>
+#include "primer.h"
 using namespace std;
+const int size=64+1;
 
-const int base = 10000;
-const int width = 4;
-const int N = 1000;
+class BigInt{
+public:
+    BigInt();
+	BigInt(const int&);
+	BigInt(const BigInt&); 
+	void readHexNum(string& str);     //从16进制字符串读入
+	void readBinaryNum(string& buf); //从2进制字符串读入
+	void displayByHex() const;   //输出到屏幕
 
-class BigInt
-{
-    private:
-        int ln, v[N];
-    public:
-        BigInt (int r = 0) {
-            for (ln = 0; r > 0; r /= base)
-                v[ln++] = r % base;
-        }
-        BigInt& operator = (const BigInt& r) {
-            memcpy(this, &r, (r.ln + 1) * sizeof(int));
-            return *this;
-        }
-        friend bool operator < (const BigInt& a, const BigInt& b);
-        friend bool operator <= (const BigInt& a, const BigInt& b);
-        friend bool operator == (const BigInt& a, const BigInt& b);
-        friend BigInt operator + (const BigInt& a, const BigInt& b);
-        friend BigInt operator - (const BigInt& a, const BigInt& b);
-        friend BigInt operator * (const BigInt& a, const BigInt& b);
-        friend BigInt operator % (const BigInt& a, const BigInt& b);
+	void operator= (const BigInt&);
+	void operator= (const int& a) { Clear(); data[0]=a;}
+	void operator>> (const int&);
 
-        int digitCount() {
-            if (ln == 0)
-                return 0;
-            int res = (ln - 1) * width;
-            for (int t = v[ln - 1]; t; ++res, t /= 10);
-            return res;
-        }
+    inline int GetLength() const;    //返回大数的长度
+	bool TestSign() {return sign;}   //判断大数的正负 
+	void Clear();    //大数清0
+	void Random(int digNum);   //产生一个随机大数,其二进制长度为digNum
+    void Randomsmall(int digNum);  //产生一个随机大数,其二进制长度为digNum的1/4
+	void Output(ostream& out) const;
+	bool IsOdd() const {return (data[0]&1);}    //判断大数奇偶性
+	int hexCharToInt(char c);
+	char intToHexChar(int c);
 
-        void read(string buf) {
-            int w, u, len = buf.length();
-            memset(this, 0, sizeof(BigInt));
-            if (len == 1 && buf[0] == '0')
-                return;
-            bool is_positive = true;
-            if (buf[0] == '-') {
-                is_positive = false;
-                len --;
-                buf.erase(buf.begin());
-            }
-            for (w = 1, u = 0; len; ) {
-                u += (buf[--len] - '0') * w;
-                if (w * 10 == base) {
-                    v[ln++] = u;
-                    u = 0, w = 1;
-                }
-                else
-                    w *= 10;
-            }
-            if (w != 1)
-                v[ln++] = u;
-            if (!is_positive)
-                v[ln - 1] = - v[ln - 1];
-            return;
-        }
-        void readBinaryNum(string buf) {
-            // Require Positive Number !!!
-            int i, len = buf.length();
-            memset(this, 0, sizeof(BigInt));
-            if (len == 1 && buf[0] == '0')
-                return;
-            BigInt p(1), res(0), bs(2);
-            for (i = len - 1; i >= 0; i--) {
-                if (buf[i] == '1')
-                    res = res + p;
-                p = p * bs;
-            }
-            *this = res;
-            return;
-        }
-
-        void write() {
-            int i;
-            printf("%d", ln == 0? 0: v[ln - 1]);
-            for (i = ln - 2; i >= 0; i--)
-                printf("%04d", v[i]);
-            printf("\n");
-        }
+	friend BigInt operator+ (const BigInt&, const BigInt&);
+	friend BigInt operator- (const BigInt&, const BigInt&);
+	friend BigInt operator- (const BigInt&, const int&);
+	friend BigInt operator* (const BigInt&, const BigInt&);
+	friend BigInt operator% (const BigInt&, const BigInt&);
+	friend BigInt operator/ (const BigInt&, const BigInt&);
+	friend BigInt operator* (const BigInt&, const unsigned int&);
+	friend bool operator< (const BigInt&, const BigInt&);
+	friend bool operator> (const BigInt&, const BigInt&);
+	friend bool operator<= (const BigInt&, const int&);
+	friend bool operator== (const BigInt&, const BigInt&);
+	friend bool operator== (const BigInt&, const int&);
+	friend ostream& operator<< (ostream&, const BigInt&);
+	friend BigInt PowerMode (const BigInt& n, const BigInt& p, const BigInt& m);
+	friend void GenPrime(BigInt& n,int digNum);
+private:
+	unsigned int data[size];
+	bool sign;
 };
 
-bool operator < (const BigInt& a, const BigInt& b) {
-    int i;
-    if (a.ln == 0) {
-        if (b.ln == 0)
-            return false;
-        return b.v[0] > 0;
-    }
-    if (b.ln == 0) {
-        if (a.ln == 0)
-            return false;
-        return a.v[0] < 0;
-    }
-    if (a.ln != b.ln)
-        return a.ln < b.ln;
-    for (i = a.ln - 1; i >= 0 && a.v[i] == b.v[i]; i--);
-    return i < 0 ? 0 : a.v[i] < b.v[i];
+BigInt operator+ (const BigInt&, const BigInt&);
+BigInt operator- (const BigInt&, const BigInt&);
+BigInt operator- (const BigInt&, const int&);
+BigInt operator* (const BigInt&, const BigInt&);
+BigInt operator/ (const BigInt&, const BigInt&);
+BigInt operator% (const BigInt&, const BigInt&);
+BigInt operator* (const BigInt&, const unsigned int&);
+bool operator< (const BigInt&, const BigInt&);
+bool operator> (const BigInt&, const BigInt&);
+bool operator<= (const BigInt&, const int&);
+bool operator== (const BigInt&, const BigInt&);
+bool operator== (const BigInt&, const int&);
+ostream& operator<< (ostream&, const BigInt&);
+BigInt PowerMode (const BigInt& n, const BigInt& p, const BigInt& m);
+void GenPrime(BigInt& n,int digNum);
+
+//默认构造函数,成员数据清0
+BigInt::BigInt()
+{
+	for(int i=0 ;i<size ;i++)
+		data[i]=0;
+	sign=true; 
 }
 
-bool operator <= (const BigInt& a, const BigInt& b) {
-    return !(b < a);
+
+//用int初始化大数
+BigInt::BigInt(const int& input)
+{
+	for(int i=0 ;i<size ;i++)
+		data[i]=0;
+	data[0]=input;
+	if(input>=0)
+		sign=true;
+	else
+		sign=false;
 }
 
-bool operator == (const BigInt& a, const BigInt& b) {
-    if (a.ln != b.ln)
-        return false;
-    for (int i = a.ln - 1; i >=0; i--)
-        if (a.v[i] != b.v[i])
-            return false;
-    return true;
+//用大数给大数赋值
+BigInt::BigInt(const BigInt& input)
+{
+	for(int i=0; i<size; i++)
+		data[i]=input.data[i];
+	sign=input.sign;
+}
+void BigInt::readHexNum(string& str)
+{
+	Clear();
+	int index=0;
+	while(str.length() > 8)
+	{
+		string seg=str.substr(str.length()-8,8);
+		str.erase(str.length()-8,8);
+		unsigned int cur=0;
+		for(int i=0;i < 8;i++)
+		{
+			cur=cur*16+hexCharToInt(seg[i]);
+		}
+		data[index++]=cur;
+	}
+	unsigned int cur=0;
+	for(int i=0;i < str.length();i++)
+		cur=cur*16+hexCharToInt(str[i]);
+	data[index]=cur;
+}
+void BigInt::readBinaryNum(string& str)
+{
+	Clear();
+	int index=0;
+	while(str.length() > 32)
+	{
+		string seg=str.substr(str.length()-32,32);
+		str.erase(str.length()-32,32);
+		unsigned int cur=0;
+		for(int i=0;i < 32;i++)
+		{
+			cur=cur*2+(seg[i]-'0');
+		}
+		data[index++]=cur;
+	}
+	unsigned int cur=0;
+	for(int i=0;i < str.length();i++)
+		cur=cur*2+(str[i]-'0');
+	data[index]=cur;
+}
+//用大数给大数赋值
+void BigInt::operator= (const BigInt& input)
+{
+	for(int i=0; i<size; i++)
+		data[i]=input.data[i];
+	sign=input.sign;
 }
 
-BigInt operator + (const BigInt& a, const BigInt& b) {
-    BigInt res;
-    int i, cy = 0;
-    for (i = 0; i < a.ln || i < b.ln || cy > 0; i++) {
-        if (i < a.ln)
-            cy += a.v[i];
-        if (i < b.ln)
-            cy += b.v[i];
-        res.v[i] = cy % base;
-        cy /= base;
-    }
-    res.ln = i;
-    return res;
+//比较两个大数的大小,a<b,返回真,否则返回假
+bool operator< (const BigInt& a, const BigInt& b)
+{
+	for(int i=size-1; i>0; i--)
+	{
+		if(a.data[i]<b.data[i])
+			return true;
+		if(a.data[i]>b.data[i])
+			return false;
+	}
+	return a.data[0]<b.data[0];
 }
 
-BigInt operator - (const BigInt& a, const BigInt& b) {
-    BigInt res;
-    if (a < b){
-        res = b - a;
-        res.v[res.ln - 1] = - res.v[res.ln - 1];
-        return res;
-    }
-    int i, cy = 0;
-    for (res.ln = a.ln, i = 0; i < res.ln; i++) {
-        res.v[i] = a.v[i] - cy;
-        if (i < b.ln)
-            res.v[i] -= b.v[i];
-        if (res.v[i] < 0)
-            cy = 1, res.v[i] += base;
-        else
-            cy = 0;
-    }
-    while (res.ln > 0 && res.v[res.ln - 1] == 0)
-        res.ln --;
-    return res;
+//比较两个大数的大小,a>b,返回真,否则返回假
+bool operator> (const BigInt& a, const BigInt& b)
+{
+	for(int i=size-1; i>=0; i--)
+	{
+		if(a.data[i]>b.data[i])
+			return true;
+		if(a.data[i]<b.data[i])
+			return false;
+	}
+	return false;
 }
 
-BigInt operator * (const BigInt& a, const BigInt& b) {
-    BigInt res;
-    res.ln = 0;
-    if (0 == b.ln) {
-        res.v[0] = 0;
-        return res;
-    }
-    int i, j, cy;
-    for (i = 0; i < a.ln; i++) {
-        for (j = cy = 0; j < b.ln || cy > 0; j++, cy /= base) {
-            if (j < b.ln)
-                cy += a.v[i] * b.v[j];
-            if (i + j < res.ln)
-                cy += res.v[i + j];
-            if (i + j >= res.ln)
-                res.v[res.ln++] = cy % base;
-            else
-                res.v[i + j] = cy % base;
-        }
-    }
-    return res;
+//判断两个大数是否相等,相等返回真,否则返回假
+bool operator== (const BigInt& a, const BigInt& b)
+{
+	for(int i=0; i<size; i++)
+		if(a.data[i]!=b.data[i])
+			return false;
+	return true;
 }
 
-BigInt operator % (const BigInt& aa, const BigInt& b) {
-    // b > 0
-    if (b == BigInt(1)) {
-        BigInt res(1);
-        return res;
-    }
-    BigInt a = aa;
-    while (a < BigInt(0))
-        a = a + b;
-    BigInt tmp, mod, res;
-    BigInt bs = BigInt(base);
-    int i, lf, rg, mid;
-    mod.v[0] = mod.ln = 0;
-    for (i = a.ln - 1; i >= 0; i--) {
-        mod = mod * bs + BigInt(a.v[i]);
-        for (lf = 0, rg = base - 1; lf < rg; ) {
-            mid = (lf + rg + 1) / 2;
-            if (b * BigInt(mid) <= mod)
-                lf = mid;
-            else
-                rg = mid - 1;
-        }
-        res.v[i] = lf;
-        mod = mod - b * BigInt(lf);
-    }
-    mod.ln = a.ln;
-    while (mod.ln > 0 && mod.v[mod.ln - 1] == 0)
-        mod.ln--;
-    return mod;
+//判断一个大数和一个int值是否相等,相等返回真,否则返回假
+bool operator== (const BigInt& a, const int& b)
+{
+	for(int i=1; i<a.GetLength(); i++){
+		if(a.data[i]!=0)
+			return false;
+	}
+	return a.data[0]==b;
 }
+
+//计算两个大数的和,采用竖式相加法
+BigInt operator+ (const BigInt& a, const BigInt& b)
+{
+	BigInt result;
+	//64位数据,存放每两位数相加的临时和
+	unsigned __int64 sum;    
+	//carry为进位标志,sub为当两数符号相异时,存放每两位数相减的临时差
+	unsigned int carry=0,sub;  
+	//取a,b中长度较长的长度
+	int length=(a.GetLength()>=b.GetLength()?a.GetLength():b.GetLength());	
+
+	//当两数符号相同时,进行加法运算
+	if(a.sign==b.sign)
+	{
+		//每一位进行竖式相加
+		for(int i=0; i<length; i++)
+		{
+			sum=(unsigned __int64)a.data[i]+b.data[i]+carry;
+			result.data[i]=(unsigned int)sum;
+			//sum的高位为进位
+			carry=(sum >> 32);
+		}
+
+		result.sign=a.sign;
+		return result;
+	}
+
+	//两数符号不同时,进行减法运算
+	else
+	{
+		BigInt tempa,tempb;
+
+		//取出a,b中绝对值较大的作为被减数
+		if(a<b)
+		{
+			tempa=b;
+			tempb=a;
+		}
+		else
+		{
+			tempa=a;
+			tempb=b;
+		}
+
+		//每一位进行竖式减
+		for(int i=0; i<length; i++)
+		{
+			sub=tempb.data[i]+carry;
+			if(tempa.data[i]>=sub)
+			{
+				result.data[i]=tempa.data[i]-sub;
+				carry=0;
+			}
+			else
+			{
+				//借位减
+				result.data[i]=(unsigned __int64)tempa.data[i]+(1<<32)-sub;
+				carry=1;
+			}
+		}
+		result.sign=tempa.sign;
+		return result;
+	}
+}
+
+//计算两个大数的差,采用竖式相减法
+BigInt operator- (const BigInt& a, const BigInt& b)
+{
+	BigInt result;
+	//64位数据,存放每两位数相加的临时和
+	unsigned __int64 sum;
+	//carry为进位标志,sub为当两数符号相异时,存放每两位数相减的临时差
+	unsigned int carry=0,sub;
+
+	//符号相同时,进行减法运算
+	if(a.sign==b.sign)
+	{
+		BigInt tempa,tempb;
+
+		//取出a,b中绝对值较大的作为被减数
+		if(a<b)
+		{
+			tempa=b;
+			tempb=a;
+			tempa.sign=!tempa.sign;
+		}
+		else
+		{
+			tempa=a;
+			tempb=b;
+		}
+
+		//每一位进行竖式减
+		for(int i=0; i<size; i++)
+		{
+			sub=tempb.data[i]+carry;
+			if(tempa.data[i]>=sub)
+			{
+				result.data[i]=tempa.data[i]-sub;
+				carry=0;
+			}
+			else
+			{
+				//借位减
+				result.data[i]=(unsigned __int64)tempa.data[i]+(1<<32)-sub;
+				carry=1;
+			}
+		}
+		result.sign=tempa.sign;
+		return result;
+	}
+
+	//两数符号不同时,进行加法运算
+	else
+	{
+		//每一位进行竖式相加
+		for(int i=0; i<size; i++)
+		{
+			sum=(unsigned __int64)a.data[i]+b.data[i]+carry;
+			result.data[i]=(unsigned int)sum;
+			//sum的高位为进位
+			carry=(sum >> 32);
+		}
+		result.sign=a.sign;
+		return result;
+	}
+}
+
+//大数减一个int数
+BigInt operator- (const BigInt& a, const int& b)
+{
+	BigInt temp(b);
+	BigInt result=a-temp;
+	return result;
+}
+
+
+//大数乘以一个INT数
+BigInt operator* (const BigInt& a, const unsigned int& b)
+{
+	BigInt result;
+	//存放B乘以A的每一位的临时积
+	unsigned __int64 sum;
+	//存放进位
+	unsigned int carry=0;
+
+	for(int i=0; i<size; i++)
+	{
+		sum=((unsigned __int64)a.data[i])*b+carry;
+		result.data[i]=(unsigned int)sum;
+		//进位在SUM的高位中
+		carry=(sum>>32);
+	}
+	result.sign=a.sign;
+	return result;
+}
+
+//大数相乘,采用竖式乘
+BigInt operator* (const BigInt& a, const BigInt& b)
+{
+	//last存放竖式上一行的积,temp存放当前行的积
+	BigInt result,last,temp;    
+	//sum存放当前行带进位的积
+	unsigned __int64 sum;
+	//存放进位
+	unsigned int carry;
+
+	//进行竖式乘
+	for(int i=0; i<b.GetLength(); i++)
+	{
+		carry=0;
+		//B的每一位与A相乘
+		for(int j=0; j<a.GetLength()+1; j++)
+		{
+			sum=((unsigned __int64)a.data[j])*(b.data[i])+carry;
+			if((i+j)<size)
+				temp.data[i+j]=(unsigned int)sum;
+			carry=(sum>>32);
+		}
+		result=(temp+last);
+		last=result;
+		temp.Clear();
+	}
+
+	//判断积的符号
+	if(a.sign==b.sign)
+		result.sign=true;
+	else
+		result.sign=false;
+
+	return result;
+}
+
+//大数除,采用试商除法,采用二分查找法优化
+BigInt operator/ (const BigInt& a, const BigInt& b)
+{
+	//mul为当前试商,low,high为二分查找试商时所用的标志
+	unsigned int mul,low,high;
+	//sub为除数与当前试商的积,subsequent为除数与下一试商的积
+	//dividend存放临时被除数
+	BigInt dividend,quotient,sub,subsequent;
+	int lengtha=a.GetLength(),lengthb=b.GetLength();
+
+	//如果被除数小于除数,直接返回0
+	if(a<b)
+	{
+		if(a.sign==b.sign)
+			quotient.sign=true;
+		else
+			quotient.sign=false;
+		return quotient;
+	}
+
+	//把被除数按除数的长度从高位截位
+	for(int i=0; i<lengthb; i++)
+		dividend.data[i]=a.data[lengtha-lengthb+i];
+
+	for(int i=lengtha-lengthb; i>=0; i--)
+	{
+		//如果被除数小于除数,再往后补位
+		if(dividend<b)
+		{
+			for(int j=lengthb; j>0; j--)
+				dividend.data[j]=dividend.data[j-1];
+			dividend.data[0]=a.data[i-1];
+			continue;
+		}
+
+		low=0;
+		high=0xffffffff;
+
+		//二分查找法查找试商
+		while(low<high)
+		{
+			mul=(((unsigned __int64)high)+low)/2;			
+			sub=(b*mul);
+			subsequent=(b*(mul+1));
+
+			if(((sub<dividend)&&(subsequent>dividend))||(sub==dividend))
+				break;
+			if(subsequent==dividend)
+			{
+				mul++;
+				sub=subsequent;
+				break;
+			}
+			if((sub<dividend)&&(subsequent<dividend))
+			{
+				low=mul;
+				continue;
+			}
+			if((sub>dividend)&&(subsequent>dividend))
+			{
+				high=mul;
+				continue;
+			}
+
+		}
+
+		//试商结果保存到商中去
+		quotient.data[i]=mul;
+		//临时被除数变为被除数与试商积的差
+		dividend=dividend-sub;
+
+		//临时被除数往后补位
+		if((i-1)>=0)
+		{
+			for(int j=lengthb; j>0; j--)
+				dividend.data[j]=dividend.data[j-1];
+			dividend.data[0]=a.data[i-1];
+		}
+	}
+
+	//判断商的符号
+	if(a.sign==b.sign)
+		quotient.sign=true;
+	else
+		quotient.sign=false;
+	return quotient;
+}
+
+//大数求模运算,与除法运算类似
+BigInt operator% (const BigInt& a, const BigInt& b)
+{
+	unsigned int mul,low,high;
+	BigInt dividend,quotient,sub,subsequent;
+	int lengtha=a.GetLength(),lengthb=b.GetLength();
+
+	//如果被除数小于除数,返回被除数为模
+	if(a<b)
+	{
+		dividend=a;
+		//余数的商永远与被除数相同
+		dividend.sign=a.sign;
+		return dividend;
+	}
+
+	//进行除法运算
+	for(int i=0; i<lengthb; i++)
+		dividend.data[i]=a.data[lengtha-lengthb+i];
+
+	for(int i=lengtha-lengthb; i>=0; i--)
+	{
+		if(dividend<b)
+		{
+			for(int j=lengthb; j>0; j--)
+				dividend.data[j]=dividend.data[j-1];
+			dividend.data[0]=a.data[i-1];
+			continue;
+		}
+
+		low=0;
+		high=0xffffffff;
+
+		while(low<=high)
+		{
+			mul=(((unsigned __int64)high)+low)/2;
+			sub=(b*mul);
+			subsequent=(b*(mul+1));
+
+			if(((sub<dividend)&&(subsequent>dividend))||(sub==dividend))
+				break;
+			if(subsequent==dividend)
+			{
+				mul++;
+				sub=subsequent;
+				break;
+			}
+			if((sub<dividend)&&(subsequent<dividend))
+			{	
+				low=mul;
+				continue;
+			}
+			if((sub>dividend)&&(subsequent>dividend))
+			{
+				high=mul;
+				continue;
+			}
+		}
+
+		quotient.data[i]=mul;
+		dividend=dividend-sub;
+		if((i-1)>=0)
+		{
+			for(int j=lengthb; j>0; j--)
+				dividend.data[j]=dividend.data[j-1];
+			dividend.data[0]=a.data[i-1];
+		}
+	}
+
+	//临时被除数即为所求模
+	dividend.sign=a.sign;
+	return dividend;
+}
+
+//产生一个随机大数,其二进制长度为digNum
+void BigInt::Random(int digNum)
+{
+	for(int i=0; i<digNum/32; i++)
+		//由于RAND()最大只能产生0X7FFF的数,为了能产生32位的随机数,需要
+			//3次RAND()操作
+				data[i]=(rand() << 17 ) + ( rand() << 2 )+ rand() % 4;
+	data[digNum/32-1]=data[digNum/32-1]|0x80000000;
+}
+
+
+//产生一个较小的随机大数,其二进制长度为digNum的1/4;
+void BigInt::Randomsmall(int digNum)
+{
+	for(int i=0; i<digNum/128; i++)
+		//由于RAND()最大只能产生0X7FFF的数,为了能产生32位的随机数,需要
+			//3次RAND()操作
+				data[i]=(rand() << 17 ) + ( rand() << 2 )+ rand() % 4;
+	data[digNum/128-1]=data[digNum/32-1]|0x80000000;
+}
+
+//将大数以16进制显示到屏幕上
+void BigInt::displayByHex() const
+{
+	unsigned int temp,result;
+	unsigned int and=0xf0000000;
+	string resStr;
+	for(int i=GetLength()-1;i>=0 ;i--)
+	{
+		temp=data[i];
+		//大数的每一位数字转换成16进制输出
+		for(int j=0; j<8; j++)
+		{
+			result=temp&and;
+			result=(result>>28);
+			temp=(temp<<4);
+			if(result>=0&&result<=9)
+				resStr += (result+'0');
+			else
+			{
+				switch(result)
+				{
+				case 10:
+					resStr += 'A';
+					break;
+				case 11:
+					resStr += 'B';
+					break;
+				case 12:
+					resStr += 'C';
+					break;
+				case 13:
+					resStr += 'D';
+					break;
+				case 14:
+					resStr += 'E';
+					break;
+				case 15:
+					resStr += 'F';
+					break;
+				}			
+			}
+		}
+	}
+	while (resStr[0] == '0')
+	{
+		resStr.erase(0,1);
+	}
+	cout << resStr;
+	cout<<endl;
+}
+
+//将大数输出到输入输出流
+void BigInt::Output(ostream& out) const
+{
+	unsigned int temp,result;
+	unsigned int and=0xf0000000;
+	string resStr;
+	for(int i=GetLength()-1;i>=0 ;i--)
+	{
+		temp=data[i];
+		//大数的每一位数字转换成16进制输出
+		for(int j=0; j<8; j++)
+		{
+			result=temp&and;
+			result=(result>>28);
+			temp=(temp<<4);
+			if(result>=0&&result<=9)
+				resStr += (result+'0');
+			else
+			{
+				switch(result)
+				{
+				case 10:
+					resStr += 'A';
+					break;
+				case 11:
+					resStr += 'B';
+					break;
+				case 12:
+					resStr += 'C';
+					break;
+				case 13:
+					resStr += 'D';
+					break;
+				case 14:
+					resStr += 'E';
+					break;
+				case 15:
+					resStr += 'F';
+					break;
+				}			
+			}
+		}
+	}
+	while (resStr[0] == '0')
+	{
+		resStr.erase(0,1);
+	}
+	out << resStr << endl;
+}
+
+//重载输出操作符
+ostream& operator<< (ostream& out, const BigInt& x)
+{
+	x.Output(out);
+	return out;
+}
+
+//大数置0
+void BigInt::Clear()
+{
+	for(int i=0 ;i<size ;i++)
+		data[i]=0;
+}
+
+//返回大数长度
+inline int BigInt::GetLength() const
+{
+	int length=size;
+	for(int i=size-1; i>=0; i--)
+	{
+		//第一位不为0即为LENGTH
+		if(data[i]==0)
+			length--;
+		else
+			break;
+	}
+	if(length == 0)
+		length=1;
+	return length;
+}
+
+//重载移位操作符,向右移N位
+void BigInt::operator>> (const int& a)
+{
+	unsigned int bit;
+	data[0]=(data[0]>>a);
+	for(int i=1; i<GetLength(); i++)
+	{
+		//先将每一位的低位移到BIT中
+		bit=data[i]&1;
+		//再把BIT移到上一位的高位中
+		bit=bit<<(32-a);;
+		data[i-1]=data[i-1]|bit;
+		data[i]=(data[i]>>a);
+	}
+}
+
+//判断大数和一个INT的大小
+bool operator<= (const BigInt& a, const int& b)
+{
+	for(int i=1; i<a.GetLength(); i++)
+	{
+		if(a.data[i]!=0)
+			return false;
+	}
+	if(a.data[0]<=b)
+		return true;
+	else 
+		return false;
+}
+
+
+//模幂运算,采用蒙格马利快速模幂算法
+BigInt PowerMode (const BigInt& n, const BigInt& p, const BigInt& m)
+{
+	BigInt temp=p;
+	BigInt r=n%m;
+	BigInt k(1);
+	while(!(temp<=1))
+	{		
+		if ( temp.IsOdd())
+		{
+			k=(k*r)%m;
+		}
+		r=(r*r)%m;
+		temp >> 1;
+	}
+	return ( r * k ) % m;
+}
+
+//产生一个待测素数,保证此数为奇数,且不能被小于5000的素数整除
+void GenPrime(BigInt& n,int digNum)
+{
+	cout<<"产生一个待测素数"<<endl;
+	int i=0;
+	BigInt divisor;
+	const int length=sizeof(prime)/sizeof(int);
+
+	while(i!=length)
+	{		
+		n.Random(digNum);
+		while(!n.IsOdd())
+			n.Random(digNum);
+		i=0;
+		for(; i<length; i++)
+		{
+			divisor=prime[i];
+			if((n%divisor)==0)
+				break;
+		}
+	}
+}
+char BigInt::intToHexChar(int n)
+{
+	char c;
+	if(n >= 0 && n <= 9)
+		c='0'+n;
+	else switch (n)
+	{
+	case 10:
+		c='A';
+	case 11:
+		c='B';
+	case 12:
+		c='C';
+	case 13:
+		c='D';
+	case 14:
+		c='E';
+	case 15:
+		c='F';
+	default:
+		break;
+	}
+	return c;
+}
+int BigInt::hexCharToInt(char c)
+{
+	if(c >= '0' && c <= '9')
+		return c-'0';
+	else switch (c)
+	{
+	case 'a':
+	case 'A':
+		return 10;
+	case 'b':
+	case 'B':
+		return 11;
+	case 'c':
+	case 'C':
+		return 12;
+	case 'd':
+	case 'D':
+		return 13;
+	case 'e':
+	case 'E':
+		return 14;
+	case 'f':
+	case 'F':
+		return 15;
+	default:
+		break;
+	}
+	cout << "error" << endl;
+	exit(0);
+}
+
 #endif
