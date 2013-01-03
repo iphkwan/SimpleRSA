@@ -332,7 +332,7 @@ BigInt operator* (const BigInt& a, const unsigned int& b)
 	//存放B乘以A的每一位的临时积
 	unsigned long long sum;
 	//存放进位
-	unsigned int carryi = 0;
+	unsigned int carry = 0;
 
 	for (int i = 0; i < size; i++)
 	{
