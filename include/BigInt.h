@@ -16,9 +16,10 @@ public:
 	void readBinaryNum(string& buf); //从2进制字符串读入
 	void displayByHex() const;   //输出到屏幕
 
-	void operator= (const BigInt&);
-	void operator= (const int& a) { Clear(); data[0]=a;}
-	void operator>> (const int&);
+	BigInt& operator= (const BigInt&);
+	BigInt& operator= (int& a) { Clear(); data[0]=a; return *this;}
+	BigInt& operator>> (const int&);
+    BigInt& operator<< (const int&);
 
     inline int GetLength() const;    //返回大数的长度
 	bool TestSign() {return sign;}   //判断大数的正负 
@@ -136,11 +137,12 @@ void BigInt::readBinaryNum(string& str)
 	data[index] = cur;
 }
 //用大数给大数赋值
-void BigInt::operator= (const BigInt& input)
+BigInt& BigInt::operator= (const BigInt& input)
 {
 	for (int i = 0; i < size; i++)
 		data[i] = input.data[i];
 	sign = input.sign;
+    return *this;
 }
 
 //比较两个大数的大小,a<b,返回真,否则返回假
@@ -674,20 +676,36 @@ inline int BigInt::GetLength() const
 	return length;
 }
 
-//重载移位操作符,向右移N位
-void BigInt::operator>> (const int& a)
+//重载移位操作符,向右移a(a < 32)位
+BigInt& BigInt::operator>> (const int& a)
 {
-	unsigned int bit;
+	unsigned int bit, filter;
+    filter = (1 << a) - 1;
 	data[0] = (data[0] >> a);
 	for (int i = 1; i < GetLength(); i++)
 	{
-		//先将每一位的低位移到BIT中
-		bit = data[i] & 1;
+		//先将每一位的低a位移到BIT中
+		bit = data[i] & filter;
 		//再把BIT移到上一位的高位中
 		bit = bit << (32 - a);
 		data[i - 1] = data[i - 1] | bit;
 		data[i] = (data[i] >> a);
 	}
+    return *this;
+}
+//重载移位操作符,向左移a位
+BigInt& BigInt::operator<< (const int& a) {
+    unsigned int bit, filter;
+    filter = (1 << a) - 1;
+    filter = (filter << (32 - a));
+    int len = GetLength();
+    for (int i = len - 1; i >= 0; i--) {
+        bit = data[i] & filter;
+        bit = bit >> (32 - a);
+        data[i + 1] = data[i + 1] | bit;
+        data[i] = (data[i] << a);
+    }
+    return *this;
 }
 
 //判断大数和一个INT的大小

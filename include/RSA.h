@@ -20,6 +20,12 @@ public:
 		key.getPrivateKey(n, d);
 		key.getPublicKey(n, e);
 	}
+    RSA(BigInt n, BigInt e, BigInt d) 
+    {
+        this->n = n;
+        this->e = e;
+        this->d = d;
+    }
 	BigInt encrypt(BigInt src)
 	{
 		return PowerMode(src, e, n);
