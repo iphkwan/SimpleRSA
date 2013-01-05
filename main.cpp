@@ -8,20 +8,29 @@
 #include "Key.h"
 #include "RSA.h"
 #include "OAEP.h"
+#include "StringTrans.h"
 #include <ctime>
 using namespace std;
 
 void test_BigInt();
 void test_RSA();
 void test_OAEP();
-
+void test_stringTrans();
 int main()
 {
     cout << "Hello RSA project!\n";
     //test_BigInt();
     //test_RSA();
-    test_OAEP();
+    //test_OAEP();
+    test_stringTrans();
     return 0;
+}
+
+void test_stringTrans() {
+    string str;
+    getline(cin, str);
+    StringTrans a(str, 16);
+    a.output();
 }
 
 void test_BigInt() {

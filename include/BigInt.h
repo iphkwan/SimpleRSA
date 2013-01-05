@@ -14,6 +14,8 @@ public:
 	BigInt(const BigInt&); 
 	void readHexNum(string& str);     //从16进制字符串读入
 	void readBinaryNum(string& buf); //从2进制字符串读入
+    void stringToBigInt(string& buf);
+    string BigIntToString();
 	void displayByHex() const;   //输出到屏幕
 
 	BigInt& operator= (const BigInt&);
@@ -143,6 +145,63 @@ void BigInt::readBinaryNum(string& str)
 	for (int i = 0; i < str.length(); i++)
 		cur = cur * 2 + (str[i] - '0');
 	data[index] = cur;
+}
+void BigInt::stringToBigInt(string& buf) {
+    int len = buf.length();
+    unsigned int s1, s2, s3, s4;
+    Clear();
+    int i;
+    int tot = len / 4;
+    for(i = 0; i < len / 4; i++) {
+        s1 = (unsigned int)buf[i << 2];
+        s2 = (unsigned int)buf[i << 2 | 1];
+        s3 = (unsigned int)buf[i << 2 | 2];
+        s4 = (unsigned int)buf[i << 2 | 3];
+        if (len % 4 == 0)
+            data[tot - i - 1] = (s1 << 24) | (s2 << 16) | (s3 << 8) | s4;
+        else
+            data[tot - i] = (s1 << 24) | (s2 << 16) | (s3 << 8) | s4;
+    }
+    int cnt = i * 4;
+    for(int j = cnt; j < len; j++) {
+        data[0] = (data[0] << 8);
+        data[0] |= (unsigned int)buf[j];
+    }
+    cout << "string to BigInt = " << (*this);
+}
+string BigInt::BigIntToString() {
+    string res;
+    int len = GetLength();
+    char ch;
+    unsigned int f4 = 0xFF, f3 = 0xFF00, f2 = 0xFF0000, f1 = 0xFF000000;
+    for(int i = len - 1; i > 0; i--) {
+        ch = (char)((data[i] & f1) >> 24);
+        res += ch;
+        ch = (char)((data[i] & f2) >> 16);
+        res += ch;
+        ch = (char)((data[i] & f3) >> 8);
+        res += ch;
+        ch = (char)(data[i] & f4);
+        res += ch;
+    }
+    if (data[0] & f1) {
+        ch = (char)((data[0] & f1) >> 24);
+        res += ch;
+    }
+    if (data[0] & f2) {
+        ch = (char)((data[0] & f2) >> 16);
+        res += ch;
+    }
+    if (data[0] & f3) {
+        ch = (char)((data[0] & f3) >> 8);
+        res += ch;
+    }
+    if (data[0] & f4) {
+        ch = (char)(data[0] & f4);
+        res += ch;
+    }
+    cout <<"BigInt to string: " << res << endl;
+    return res;
 }
 //用大数给大数赋值
 BigInt& BigInt::operator= (const BigInt& input)
