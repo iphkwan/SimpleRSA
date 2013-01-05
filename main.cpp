@@ -2,6 +2,7 @@
 #include <cmath>
 #include <string>
 #include <string.h>
+#include <cstdio>
 #include "BigInt.h"
 #include "PrimeGen.h"
 #include "Key.h"
@@ -101,6 +102,8 @@ void test_OAEP() {
     cin >> digNum;
     cout << "input oaep_K(k>=256): \n";
     cin >> k;
+
+    printf("------------OAEP_SAMPLE(m = %d, k = %d)---------------\n", digNum, k);
     OAEP test(k, digNum);
     BigInt msg;
     msg.Random(digNum);
