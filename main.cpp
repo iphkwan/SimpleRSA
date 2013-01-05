@@ -30,7 +30,7 @@ void test_stringTrans() {
     string str;
     getline(cin, str);
     StringTrans a(str, 16);
-    a.output();
+    a.split();
 }
 
 void test_BigInt() {

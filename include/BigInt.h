@@ -126,6 +126,7 @@ void BigInt::readHexNum(string& str)
 		cur = cur*16+hexCharToInt(str[i]);
 	data[index] = cur;
 }
+
 void BigInt::readBinaryNum(string& str)
 {
 	Clear();
@@ -146,6 +147,7 @@ void BigInt::readBinaryNum(string& str)
 		cur = cur * 2 + (str[i] - '0');
 	data[index] = cur;
 }
+
 void BigInt::stringToBigInt(string& buf) {
     int len = buf.length();
     unsigned int s1, s2, s3, s4;
@@ -169,6 +171,7 @@ void BigInt::stringToBigInt(string& buf) {
     }
     cout << "string to BigInt = " << (*this);
 }
+
 string BigInt::BigIntToString() {
     string res;
     int len = GetLength();
@@ -203,6 +206,7 @@ string BigInt::BigIntToString() {
     cout <<"BigInt to string: " << res << endl;
     return res;
 }
+
 //用大数给大数赋值
 BigInt& BigInt::operator= (const BigInt& input)
 {
@@ -313,7 +317,7 @@ BigInt operator+ (const BigInt& a, const BigInt& b)
 			else
 			{
 				//借位减
-				result.data[i] = (unsigned long long)tempa.data[i] + (unsigned long long)(1<<32) - sub;
+				result.data[i] = (unsigned long long)tempa.data[i] + (unsigned long long)(1)<<32 - sub;
 				carry = 1;
 			}
 		}
@@ -361,7 +365,7 @@ BigInt operator- (const BigInt& a, const BigInt& b)
 			else
 			{
 				//借位减
-				result.data[i] = (unsigned long long)tempa.data[i] + (unsigned long long)(1<<32) - sub;
+				result.data[i] = (unsigned long long)tempa.data[i] + (unsigned long long)(1)<<32 - sub;
 				carry = 1;
 			}
 		}
