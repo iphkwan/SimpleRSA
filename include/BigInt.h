@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "globalData.h"
 using namespace std;
-const int size=64+1;
+const int size = 64 + 1;
 
 class BigInt{
 public:
@@ -20,7 +20,8 @@ public:
 	BigInt& operator= (int& a) { Clear(); data[0]=a; return *this;}
 	BigInt& operator>> (const int&);
     BigInt& operator<< (const int&);
-
+    
+    inline int GetBitLength() const; //返回大数的二进制长度
     inline int GetLength() const;    //返回大数的长度
 	bool TestSign() {return sign;}   //判断大数的正负 
 	void Clear();    //大数清0
@@ -37,6 +38,9 @@ public:
 	friend BigInt operator* (const BigInt&, const BigInt&);
 	friend BigInt operator% (const BigInt&, const BigInt&);
 	friend BigInt operator/ (const BigInt&, const BigInt&);
+	friend BigInt operator& (const BigInt&, const BigInt&);
+	friend BigInt operator^ (const BigInt&, const BigInt&);
+	friend BigInt operator| (const BigInt&, const BigInt&);
 	friend BigInt operator* (const BigInt&, const unsigned int&);
 	friend bool operator< (const BigInt&, const BigInt&);
 	friend bool operator> (const BigInt&, const BigInt&);
@@ -57,6 +61,10 @@ BigInt operator- (const BigInt&, const int&);
 BigInt operator* (const BigInt&, const BigInt&);
 BigInt operator/ (const BigInt&, const BigInt&);
 BigInt operator% (const BigInt&, const BigInt&);
+BigInt operator& (const BigInt&, const BigInt&);
+BigInt operator^ (const BigInt&, const BigInt&);
+BigInt operator| (const BigInt&, const BigInt&);
+
 BigInt operator* (const BigInt&, const unsigned int&);
 bool operator< (const BigInt&, const BigInt&);
 bool operator> (const BigInt&, const BigInt&);
@@ -544,6 +552,33 @@ BigInt operator% (const BigInt& a, const BigInt& b)
 	return dividend;
 }
 
+BigInt operator& (const BigInt& a, const BigInt& b) {
+    int len = max(a.GetLength(), b.GetLength());
+    BigInt res;
+    for (int i = 0; i < len; i++)
+        res.data[i] = (a.data[i] & b.data[i]);
+    res.sign = (a.sign & b.sign);
+    return res;
+}
+
+BigInt operator^ (const BigInt& a, const BigInt& b) {
+    int len = max(a.GetLength(), b.GetLength());
+    BigInt res;
+    for (int i = 0; i < len; i++)
+        res.data[i] = (a.data[i] ^ b.data[i]);
+    res.sign = (a.sign ^ b.sign);
+    return res;
+}
+
+BigInt operator| (const BigInt& a, const BigInt& b) {
+    int len = max(a.GetLength(), b.GetLength());
+    BigInt res;
+    for (int i = 0; i < len; i++)
+        res.data[i] = (a.data[i] ^ b.data[i]);
+    res.sign = (a.sign ^ b.sign);
+    return res;
+}
+
 //将大数以16进制显示到屏幕上
 void BigInt::displayByHex() const
 {
@@ -674,6 +709,17 @@ inline int BigInt::GetLength() const
 	if (length == 0)
 		length = 1;
 	return length;
+}
+
+inline int BigInt::GetBitLength() const {
+    int len = GetLength();
+    int res = (len - 1) * 32;
+    unsigned int tmp = data[len - 1];
+    while (tmp > 0) {
+        res ++;
+        tmp = (tmp >> 1);
+    }
+    return res;
 }
 
 //重载移位操作符,向右移a(a < 32)位

@@ -12,11 +12,14 @@ using namespace std;
 
 void test_BigInt();
 void test_RSA();
+void test_OAEP();
+
 int main()
 {
     cout << "Hello RSA project!\n";
     //test_BigInt();
-    test_RSA();
+    //test_RSA();
+    test_OAEP();
     return 0;
 }
 
@@ -89,4 +92,20 @@ void test_RSA() {
     cout << "after decrypt: ";
     BigInt decp = rsa.decrypt(encp);
     decp.displayByHex();
+}
+
+void test_OAEP() {
+    srand((unsigned) time(NULL));
+    int digNum, k;
+    cout << "input the msg Bit length(m>=512): \n";
+    cin >> digNum;
+    cout << "input oaep_K(k>=256): \n";
+    cin >> k;
+    OAEP test(k, digNum);
+    BigInt msg;
+    msg.Random(digNum);
+    cout << "the msg is: " << msg;
+    msg = test.oaep_encode(msg);
+    test.oaep_decode(msg);
+    return;
 }
