@@ -851,10 +851,17 @@ int BigInt::hexCharToInt(char c)
 //产生一个随机大数,其二进制长度为digNum
 void BigInt::Random(int digNum)
 {
+    if (digNum < 32) {
+	    data[0] = (rand() << 17 ) + ( rand() << 2 )+ rand() % 4;
+        unsigned int filter = 1;
+        filter = (1 << digNum) - 1;
+        data[0] = (data[0] & filter);
+        return;
+    }
     for (int i = 0; i < digNum / 32; i++) {
 	    //由于RAND()最大只能产生0X7FFF的数,为了能产生32位的随机数,需要
 	    //3次RAND()操作
-	    data[i] = ((rand() % 0x7FFFF) << 17 ) + ( (rand() % 0x7FFFF) << 2 )+ rand() % 4;
+	    data[i] = (rand() << 17 ) + ( rand() << 2 )+ rand() % 4;
     }
     data[digNum/32-1] = data[digNum/32-1] | 0x80000000;
 }
@@ -863,6 +870,14 @@ void BigInt::Random(int digNum)
 //产生一个较小的随机大数,其二进制长度为digNum的1/4;
 void BigInt::Randomsmall(int digNum)
 {
+    if (digNum < 128) {
+	    data[0] = (rand() << 17 ) + ( rand() << 2 )+ rand() % 4;
+        unsigned int filter = 1;
+        int tmp = digNum / 4;
+        filter = (1 << tmp) - 1;
+        data[0] = (data[0] & filter);
+        return;
+    }
     for (int i = 0; i < digNum / 128; i++) {
 	    //由于RAND()最大只能产生0X7FFF的数,为了能产生32位的随机数,需要
 	    //3次RAND()操作
