@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "globalData.h"
 using namespace std;
-const int size = 64 + 1;
+const int size = 128 + 1;
 
 class BigInt{
 public:
@@ -16,6 +16,7 @@ public:
 	void readBinaryNum(string& buf); //从2进制字符串读入
     void stringToBigInt(string& buf);
     string BigIntToString();
+    string TransformToHexString();
 	void displayByHex() const;   //输出到屏幕
 
 	BigInt& operator= (const BigInt&);
@@ -39,6 +40,7 @@ public:
 	friend BigInt operator- (const BigInt&, const int&);
 	friend BigInt operator* (const BigInt&, const BigInt&);
 	friend BigInt operator% (const BigInt&, const BigInt&);
+    friend int operator% (const BigInt&,const int&);
 	friend BigInt operator/ (const BigInt&, const BigInt&);
 	friend BigInt operator& (const BigInt&, const BigInt&);
 	friend BigInt operator^ (const BigInt&, const BigInt&);
@@ -63,6 +65,7 @@ BigInt operator- (const BigInt&, const int&);
 BigInt operator* (const BigInt&, const BigInt&);
 BigInt operator/ (const BigInt&, const BigInt&);
 BigInt operator% (const BigInt&, const BigInt&);
+int operator% (const BigInt&,const int&);
 BigInt operator& (const BigInt&, const BigInt&);
 BigInt operator^ (const BigInt&, const BigInt&);
 BigInt operator| (const BigInt&, const BigInt&);
@@ -317,7 +320,7 @@ BigInt operator+ (const BigInt& a, const BigInt& b)
 			else
 			{
 				//借位减
-				result.data[i] = (unsigned long long)tempa.data[i] + (unsigned long long)(1)<<32 - sub;
+				result.data[i] = (unsigned long long)tempa.data[i] + ((unsigned long long)1<<32) - sub;
 				carry = 1;
 			}
 		}
@@ -365,7 +368,7 @@ BigInt operator- (const BigInt& a, const BigInt& b)
 			else
 			{
 				//借位减
-				result.data[i] = (unsigned long long)tempa.data[i] + (unsigned long long)(1)<<32 - sub;
+				result.data[i] = (unsigned long long)tempa.data[i] + ((unsigned long long)1<<32) - sub;
 				carry = 1;
 			}
 		}
@@ -614,6 +617,19 @@ BigInt operator% (const BigInt& a, const BigInt& b)
 	dividend.sign = a.sign;
 	return dividend;
 }
+int operator% (const BigInt& a, const int& b) {
+    int len = a.GetLength();
+    if (len == 1)
+        return a.data[0] % b;
+
+    unsigned long long cur = 0;
+
+    for (int i = len - 1; i >= 0; i--) {
+        cur = (cur << 32) + a.data[i];
+        cur = cur % b;
+    }
+    return (int)cur;
+}
 
 BigInt operator& (const BigInt& a, const BigInt& b) {
     int len = max(a.GetLength(), b.GetLength());
@@ -750,6 +766,54 @@ ostream& operator<< (ostream& out, const BigInt& x)
 	return out;
 }
 
+string BigInt::TransformToHexString()
+{
+	unsigned int temp, result;
+	unsigned int filter = 0xf0000000;
+	string resStr;
+	for(int i = GetLength() - 1; i >= 0; i--)
+	{
+		temp = data[i];
+		//大数的每一位数字转换成16进制输出
+		for (int j = 0; j < 8; j++)
+		{
+			result = temp & filter;
+			result = (result >> 28);
+			temp = (temp << 4);
+			if (result >= 0 && result <= 9)
+				resStr += (result + '0');
+			else
+			{
+				switch (result)
+				{
+				case 10:
+					resStr += 'A';
+					break;
+				case 11:
+					resStr += 'B';
+					break;
+				case 12:
+					resStr += 'C';
+					break;
+				case 13:
+					resStr += 'D';
+					break;
+				case 14:
+					resStr += 'E';
+					break;
+				case 15:
+					resStr += 'F';
+					break;
+				}			
+			}
+		}
+	}
+	while (resStr[0] == '0')
+	{
+		resStr.erase(0,1);
+	}
+    return resStr;
+}
 //大数置0
 void BigInt::Clear()
 {
@@ -963,9 +1027,8 @@ BigInt Gcd(const BigInt& m, const BigInt& n)
 //用扩展欧几里德算法求乘法模逆
 BigInt ExtendedGcd(const BigInt& a, const BigInt& b, BigInt& x, BigInt& y)
 {
-	//cout << "a: ";a.displayByHex(); cout << "b: ";b.displayByHex();cout << endl;
-	//outfile << "a: ";outfile << a; outfile << "b: ";outfile << b;outfile << endl;
-	BigInt t, d;   
+	/* naive version
+    BigInt t, d;   
 	//如果一个操作数为零则无法进行除法运算
 	if (b == 0)   
 	{
@@ -977,7 +1040,24 @@ BigInt ExtendedGcd(const BigInt& a, const BigInt& b, BigInt& x, BigInt& y)
 	t = x;   
 	x = y;   
 	y = t - ((a / b) * y);   
-	return d;   
+	return d;  */
+    BigInt x0 = 1, y0 = 0, x1 = 0, y1 = 1, c = a, d = b;
+    BigInt k, r, t;
+    while (!(d == 0)) { 
+        k = c / d;
+        r = c % d;
+        t = c;
+        c = d;
+        d = r;
+        t = x0;
+        x0 = x1;
+        x1 = t - k * x1;
+        t = y0;
+        y0 = y1;
+        y1 = t - k * y1;
+    }
+    x = x0, y = y0;
+    return c;
 }
 
 BigInt Euc(BigInt& E,BigInt& A)
