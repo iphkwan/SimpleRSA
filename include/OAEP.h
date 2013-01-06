@@ -68,12 +68,12 @@ class OAEP
                 filter = (filter << 16);
             filter = (filter << (K % 16));
             filter = filter - 1;
-
             P2 = (cnt & filter);
             
             for (int i = 0; i < K/16; i++)
                 P1 = (P1 >> 16);
             P1 = (P1 >> (K % 16));
+
             tmp = m_to_k(P1);
             r = (tmp ^ P2);
             cout << "the decode random number is " << r;

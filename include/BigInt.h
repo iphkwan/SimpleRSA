@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "globalData.h"
 using namespace std;
-const int size = 64 + 1;
+const int size = 128 + 1;
 
 class BigInt{
 public:
@@ -317,7 +317,7 @@ BigInt operator+ (const BigInt& a, const BigInt& b)
 			else
 			{
 				//借位减
-				result.data[i] = (unsigned long long)tempa.data[i] + (unsigned long long)(1)<<32 - sub;
+				result.data[i] = (unsigned long long)tempa.data[i] + ((unsigned long long)1<<32) - sub;
 				carry = 1;
 			}
 		}
@@ -365,7 +365,7 @@ BigInt operator- (const BigInt& a, const BigInt& b)
 			else
 			{
 				//借位减
-				result.data[i] = (unsigned long long)tempa.data[i] + (unsigned long long)(1)<<32 - sub;
+				result.data[i] = (unsigned long long)tempa.data[i] + ((unsigned long long)1<<32) - sub;
 				carry = 1;
 			}
 		}
