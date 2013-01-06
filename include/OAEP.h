@@ -5,6 +5,7 @@
 #include <string.h>
 #include "BigInt.h"
 #include "Key.h"
+#include <ctime>
 using namespace std;
 
 class OAEP
@@ -46,6 +47,7 @@ class OAEP
         }
         BigInt oaep_encode(const BigInt& cnt) {
             BigInt r, tmp, P1, P2;
+            srand((unsigned) time(NULL));
             r.Random(K);
             cout << "the encode random number is " << r;
             tmp = k_to_m(r);

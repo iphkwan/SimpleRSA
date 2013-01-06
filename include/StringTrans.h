@@ -26,7 +26,7 @@ class StringTrans {
 
         void split() {
             int n = 0;
-            int StrLen = BitLen / 2;
+            int StrLen = BitLen / 8 - 2;
             code.clear();
             do
             {
