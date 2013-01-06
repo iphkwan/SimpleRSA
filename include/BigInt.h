@@ -16,6 +16,7 @@ public:
 	void readBinaryNum(string& buf); //从2进制字符串读入
     void stringToBigInt(string& buf);
     string BigIntToString();
+    string TransformToHexString();
 	void displayByHex() const;   //输出到屏幕
 
 	BigInt& operator= (const BigInt&);
@@ -765,6 +766,54 @@ ostream& operator<< (ostream& out, const BigInt& x)
 	return out;
 }
 
+string BigInt::TransformToHexString()
+{
+	unsigned int temp, result;
+	unsigned int filter = 0xf0000000;
+	string resStr;
+	for(int i = GetLength() - 1; i >= 0; i--)
+	{
+		temp = data[i];
+		//大数的每一位数字转换成16进制输出
+		for (int j = 0; j < 8; j++)
+		{
+			result = temp & filter;
+			result = (result >> 28);
+			temp = (temp << 4);
+			if (result >= 0 && result <= 9)
+				resStr += (result + '0');
+			else
+			{
+				switch (result)
+				{
+				case 10:
+					resStr += 'A';
+					break;
+				case 11:
+					resStr += 'B';
+					break;
+				case 12:
+					resStr += 'C';
+					break;
+				case 13:
+					resStr += 'D';
+					break;
+				case 14:
+					resStr += 'E';
+					break;
+				case 15:
+					resStr += 'F';
+					break;
+				}			
+			}
+		}
+	}
+	while (resStr[0] == '0')
+	{
+		resStr.erase(0,1);
+	}
+    return resStr;
+}
 //大数置0
 void BigInt::Clear()
 {
