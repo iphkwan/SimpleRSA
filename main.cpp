@@ -71,6 +71,8 @@ void test_example() {
     
     int m, k;
     OAEP cal;
+
+    clock_t beg = clock();
     if (digNum == 512) {
         m = 500, k = 11;
         StringTrans tran(msg, m);
@@ -146,6 +148,9 @@ void test_example() {
         cout << decodeMsg << endl;
         cout << "-------------------------------------------------\n";
     }
+
+    clock_t cur = clock();
+    printf("Time used: %.4lfs\n", (double)(cur - beg) / CLOCKS_PER_SEC);
 }
 
 void test_stringTrans() {
