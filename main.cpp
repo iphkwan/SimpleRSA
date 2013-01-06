@@ -246,8 +246,10 @@ void test_RSA() {
         return;
     }
     RSA rsa(digNum);
-    BigInt test, n, e;
+    BigInt test, n, e, p, q;
     rsa.getPublicKey(n, e);
+    rsa.getDivNum(p, q);
+    cout << "p = " << p << "q = " << q << endl;
     cout << "Generating test message...\n";
     test.Random(digNum);
     while (!(test < n))

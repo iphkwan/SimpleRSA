@@ -13,12 +13,14 @@ class RSA
     private: 
         BigInt n,d;
 	    BigInt e;
+        BigInt p, q;    // These two elements should not exist, just help us to demonstrate our work.
     public:
 	    RSA(int digNum = 512)
 	    {
 		    Key key(digNum / 2);
 		    key.getPrivateKey(n, d);
 		    key.getPublicKey(n, e);
+            key.getDivNum(p, q);
 	    }
         RSA(BigInt n, BigInt e, BigInt d) 
         {
@@ -44,6 +46,12 @@ class RSA
 		    N = this->n;
 		    D = this->d;
 	    }
+
+        //should not exist
+        void getDivNum(BigInt& P, BigInt& Q) {
+            P = this->p;
+            Q = this->q;
+        }
 };
 
 #endif

@@ -69,6 +69,12 @@ public:
 		N = this->n;
 		D = this->d;
 	}
+
+    //This function should not exist. It just help us to demonstrate our work.
+    void getDivNum(BigInt& P, BigInt& Q) {
+        P = this->p;
+        Q = this->q;
+    }
 };
 
 #endif
