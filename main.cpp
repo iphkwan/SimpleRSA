@@ -57,14 +57,22 @@ void test_example() {
     d.readHexNum(sd);
     RSA rsa512(n, e, d);
 
+    sn = "CAA886066B57007F931C999162224D36546EAEBAF72DE6A6BF07E091ED43885A096492CF0A911D0019F3903CF09503DDC55C03C138205A425D8A52278A1BA56A6123E410A32C2468C7CB8F79022968013F8E4BABFC655D1B216D1192762B1D6591CEA6C47B8DBE65F771DC4460E854A287C8FE36F1121BFBF998B84D928C37C47A0F161C74F428A23F0B01BD15CB6D545EFDB7A7475473221D9B6BA697CA6D16642D3FCF727D68C1B32940600B0FCD87A71A003E436A29EE4DFB673546472E7DF72BF909D0A1A2E8270A8663C045D4DB1247E7A189AB6802E6D91EEF2A5A894EACA0337DB6AA8DAF5A6766D0C259DDF6338D8AB856CB6933E187745BE43C5CCB";
+    se = "84CDC278F173E4C139AC9BA1F5B2992C47F79DD85951DB5F9A164C34DEFADCB0500BEBA5AE4DD477599F244DAD308AADFDA45146CE529341971CB1A4112AB07B6C77C8E39022EAAEF3D15459D0E860D734B69EE3E2046DFE5298D9C6FC972660D3FFBCE641319561BA45EC54BEC1B2524927776BDFD46EE229BBE596E7C74DED";
+    sd = "1BCF757D631F0DB87401BF6141756A11666D738C62CC033B1E5E41822DB1CB7F5DD666650F77EB61217DEBE5BE7CF0F86CFFFEC8EC3A37C9F4AA1310299515E2B5A27D2D1296533FBB2B08E97502CA3D7D12611ACEF6B57BB2B61BAAF81257C175ED8B2AF8F346C55D9734C48863DDD4D027100B037912B79E9992B4BF13C6DA5DF1C1B55FF7637899B23F6786ED2E560FB117B61910B7DC930A1A3181E523D9DE7659A34B3C978F52638F071E2293C24FE70D9B3C2030E5FBBD604CAD3F8040C672024B63E6D9811EE1433E94C55CCA1DB9AAA9875726E998178B2092DCE24E6728C7244E2EB6FF5ACF0EC6663429ED0FBBF95AA392FA7AA75060CB23367E25";
+    n.readHexNum(sn);
+    e.readHexNum(se);
+    d.readHexNum(sd);
+    RSA rsa2048(n, e, d);
+
     string msg;
     cout << "Please input the origin massage:\n";
     getline(cin, msg);
 
     int digNum;
-    cout << "Please choose the RSA model(512, 768, 1024):\n";
+    cout << "Please choose the RSA model(512, 768, 1024, 2048):\n";
     cin >> digNum;
-    if (digNum != 512 && digNum != 768 && digNum != 1024) {
+    if (digNum != 512 && digNum != 768 && digNum != 1024 && digNum != 2048) {
         cout << "model error!\n";
         return;
     }
@@ -98,7 +106,7 @@ void test_example() {
         cout << decodeMsg << endl;
         cout << "-------------------------------------------------\n";
     }
-    if (digNum == 768) {
+    else if (digNum == 768) {
         m = 700, k = 67;
         StringTrans tran(msg, m);
         vector<BigInt> v = tran.getCode();
@@ -123,7 +131,7 @@ void test_example() {
         cout << decodeMsg << endl;
         cout << "-------------------------------------------------\n";
     }
-    if (digNum == 1024) {
+    else if (digNum == 1024) {
         m = 900, k = 123;
         StringTrans tran(msg, m);
         vector<BigInt> v = tran.getCode();
@@ -141,6 +149,31 @@ void test_example() {
 
         for (int i = 0; i < t.size(); i++) {
             t[i] = rsa1024.decrypt(t[i]);
+            t[i] = cal.oaep_decode(t[i]);
+        }
+        string decodeMsg = tran.genMassage(t);
+        cout << "--------------------decode-----------------------\n";
+        cout << decodeMsg << endl;
+        cout << "-------------------------------------------------\n";
+    }
+    else if (digNum == 2048) {
+        m = 1800, k = 247;
+        StringTrans tran(msg, m);
+        vector<BigInt> v = tran.getCode();
+
+        cal.changeMode(k, m);
+        vector<BigInt> t;
+        for (int i = 0; i < v.size(); i++) {
+            t.push_back(cal.oaep_encode(v[i]));
+            t[i] = rsa2048.encrypt(t[i]);
+        }
+        cout << "--------------------encode-----------------------\n";
+        for (int i = 0; i < t.size(); i++)
+            cout << t[i];
+        cout << "-------------------------------------------------\n";
+
+        for (int i = 0; i < t.size(); i++) {
+            t[i] = rsa2048.decrypt(t[i]);
             t[i] = cal.oaep_decode(t[i]);
         }
         string decodeMsg = tran.genMassage(t);
