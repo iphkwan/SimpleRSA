@@ -112,8 +112,8 @@ void BigInt::readHexNum(string& str)
 	int index = 0;
 	while (str.length() > 8)
 	{
-		string seg = str.substr(str.length()-8, 8);
-		str.erase(str.length()-8, 8);
+		string seg = str.substr(str.length() - 8, 8);
+		str.erase(str.length() - 8, 8);
 		unsigned int cur = 0;
 		for(int i = 0; i < 8; i++)
 		{
@@ -123,7 +123,7 @@ void BigInt::readHexNum(string& str)
 	}
 	unsigned int cur = 0;
 	for (int i = 0; i < str.length(); i++)
-		cur = cur*16+hexCharToInt(str[i]);
+		cur = cur * 16 + hexCharToInt(str[i]);
 	data[index] = cur;
 }
 
@@ -133,8 +133,8 @@ void BigInt::readBinaryNum(string& str)
 	int index = 0;
 	while (str.length() > 32)
 	{
-		string seg = str.substr(str.length()-32, 32);
-		str.erase(str.length()-32, 32);
+		string seg = str.substr(str.length() - 32, 32);
+		str.erase(str.length() - 32, 32);
 		unsigned int cur = 0;
 		for (int i = 0; i < 32; i++)
 		{
