@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include "globalData.h"
 using namespace std;
-const int size = 128 + 1;
+const int size = 64 + 1;
 
 class BigInt{
 public:

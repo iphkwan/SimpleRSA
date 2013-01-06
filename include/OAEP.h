@@ -40,6 +40,10 @@ class OAEP
             this->K = k;
             this->M = m;
         }
+        void changeMode(int k, int m) {
+            this->K = k;
+            this->M = m;
+        }
         BigInt oaep_encode(const BigInt& cnt) {
             BigInt r, tmp, P1, P2;
             r.Random(K);
