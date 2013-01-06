@@ -239,7 +239,7 @@ void test_RSA() {
     srand((unsigned) time(NULL));
 
     int digNum;
-    cout << "input the model (512, 768, 1024? it's not less than 256):\n";
+    cout << "input the model (512, 768, 1024, 2048? it's not less than 256):\n";
     cin >> digNum;
     if (digNum < 256) {
         cout << "It may leads error.\n";
