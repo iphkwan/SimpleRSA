@@ -23,10 +23,10 @@ int main()
 {
     cout << "Hello RSA project!\n";
     //test_BigInt();
-    test_RSA();
+    //test_RSA();
     //test_OAEP();
     //test_stringTrans();
-    //test_example();
+    test_example();
     return 0;
 }
 

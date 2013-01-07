@@ -178,32 +178,32 @@ void BigInt::stringToBigInt(string& buf) {
 string BigInt::BigIntToString() {
     string res;
     int len = GetLength();
-    char ch;
+    unsigned char ch;
     unsigned int f4 = 0xFF, f3 = 0xFF00, f2 = 0xFF0000, f1 = 0xFF000000;
     for(int i = len - 1; i > 0; i--) {
-        ch = (char)((data[i] & f1) >> 24);
+        ch = (unsigned char)((data[i] & f1) >> 24);
         res += ch;
-        ch = (char)((data[i] & f2) >> 16);
+        ch = (unsigned char)((data[i] & f2) >> 16);
         res += ch;
-        ch = (char)((data[i] & f3) >> 8);
+        ch = (unsigned char)((data[i] & f3) >> 8);
         res += ch;
-        ch = (char)(data[i] & f4);
+        ch = (unsigned char)(data[i] & f4);
         res += ch;
     }
     if (data[0] & f1) {
-        ch = (char)((data[0] & f1) >> 24);
+        ch = (unsigned char)((data[0] & f1) >> 24);
         res += ch;
     }
     if (data[0] & f2) {
-        ch = (char)((data[0] & f2) >> 16);
+        ch = (unsigned char)((data[0] & f2) >> 16);
         res += ch;
     }
     if (data[0] & f3) {
-        ch = (char)((data[0] & f3) >> 8);
+        ch = (unsigned char)((data[0] & f3) >> 8);
         res += ch;
     }
     if (data[0] & f4) {
-        ch = (char)(data[0] & f4);
+        ch = (unsigned char)(data[0] & f4);
         res += ch;
     }
     cout <<"BigInt to string: " << res << endl;
