@@ -1,4 +1,6 @@
 #include <iostream>
+#include <fstream>
+#include <iomanip>
 #include <cmath>
 #include <string>
 #include <string.h>
@@ -18,6 +20,7 @@ void test_RSA();
 void test_OAEP();
 void test_stringTrans();
 void test_example();
+void test_primeGen();
 
 int main()
 {
@@ -26,8 +29,48 @@ int main()
     //test_RSA();
     //test_OAEP();
     //test_stringTrans();
-    test_example();
+    //test_example();
+    test_primeGen();
     return 0;
+}
+
+void test_primeGen() {
+    int digNum;
+    cout << "Please input the bit len of prime(256, 384, 512, 1024?):\n";
+    cin >> digNum;
+    
+    int n;
+    cout << "Times you want to loop?(1-10?):\n";
+    cin >> n;
+
+    BigInt tmp;
+    ofstream fp;
+    if (digNum == 256)
+        fp.open("./data/rsa512.txt", ios::app);
+    else if (digNum == 384)
+        fp.open("./data/rsa768.txt", ios::app);
+    else if (digNum == 512)
+        fp.open("./data/rsa1024.txt", ios::app);
+    else if (digNum == 1024)
+        fp.open("./data/rsa2048.txt", ios::app);
+    else {
+        cout << "Wrong model.\n";
+        return;
+    }
+
+    clock_t last, cnt;
+    srand((unsigned) time(NULL));
+    for (int i = 0; i < n; i++) {
+        last = clock();
+        tmp = GeneratePrime(digNum);
+        cnt = clock();
+        cout << "prime = " << tmp;
+        cout << "Time used: " << fixed << setprecision(4) << ((double)(cnt - last) / CLOCKS_PER_SEC) << "s" << endl;
+        fp << "prime = " << tmp;
+        fp << "Time used: " << fixed << setprecision(4) << ((double)(cnt - last) / CLOCKS_PER_SEC) << "s" << endl;
+    }
+    fp.close();
+    return;
 }
 
 void test_example() {
