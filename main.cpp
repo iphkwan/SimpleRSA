@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <iomanip>
 #include <cmath>
 #include <string>
@@ -13,6 +14,7 @@
 #include "StringTrans.h"
 #include <ctime>
 #include <vector>
+#include <locale>
 using namespace std;
 
 void test_BigInt();
