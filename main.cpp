@@ -32,9 +32,9 @@ int main()
     //test_BigInt();
     //test_RSA();
     //test_OAEP();
-    //test_stringTrans();
+    test_stringTrans();
     //test_example();
-    test_primeGen();
+    //test_primeGen();
     //test_fastKeyGen();
     return 0;
 }

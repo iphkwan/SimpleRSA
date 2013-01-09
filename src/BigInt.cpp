@@ -92,7 +92,6 @@ void BigInt::stringToBigInt(string& buf) {
         data[0] = (data[0] << 8);
         data[0] |= (unsigned int)buf[j];
     }
-    cout << "string to BigInt = " << (*this);
 }
 
 string BigInt::BigIntToString() const {
@@ -126,7 +125,6 @@ string BigInt::BigIntToString() const {
         ch = (unsigned char)(data[0] & f4);
         res += ch;
     }
-    cout <<"BigInt to string: " << res << endl;
     return res;
 }
 
