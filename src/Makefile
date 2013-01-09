@@ -22,4 +22,4 @@ RSA.o: RSA.cpp include/RSA.h include/Key.h include/utils.h
 StringTrans.o: StringTrans.cpp include/StringTrans.h include/OAEP.h include/RSA.h include/BigInt.h include/utils.h
 
 clean:
-	rm -f $(OBJS) libRSA.so
+	rm -f $(OBJS) libRSA.a
