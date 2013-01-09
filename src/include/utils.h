@@ -8,6 +8,7 @@
     #define LOG(msg) std::cout << msg
 #else
     #define LOGLN(msg) 
+    #define LOG(msg)
 
 #endif
 
