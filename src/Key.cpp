@@ -10,8 +10,7 @@
 
 using namespace std;
 
-Key::Key(int digNum)
-{
+void Key::generate(int digNum) {
     this->digNum = digNum;
     srand((unsigned)time(NULL));
     LOGLN("===========Key===========");
@@ -44,30 +43,30 @@ Key::Key(int digNum)
     d = x;
     LOGLN("| \t私钥d: " << d);
     LOGLN("=========================");
+
 }
 
-// quick Generate Key, digNum1 = 256/384/512/1024, digNum2 no uses.
-Key::Key(int digNum1, int digNum2) {
-    this->digNum = digNum1;
+void Key::quickGenerate(int digNum) {
+    this->digNum = digNum;
     srand((unsigned)time(NULL));
     int i, j;
     i = rand() % 10;
     j = rand() % 10;
     while (j == i)
         j = rand() % 10;
-    if (digNum1 == 256) {
+    if (digNum == 256) {
         p.readHexNum(prime256[i]);
         q.readHexNum(prime256[j]);
     }
-    else if (digNum1 == 384) {
+    else if (digNum == 384) {
         p.readHexNum(prime384[i]);
         q.readHexNum(prime384[j]);
     }
-    else if (digNum1 == 512) {
+    else if (digNum == 512) {
         p.readHexNum(prime512[i]);
         q.readHexNum(prime512[j]);
     }
-    else if (digNum1 == 1024) {
+    else if (digNum == 1024) {
         p.readHexNum(prime1024[i]);
         q.readHexNum(prime1024[j]);
     }
@@ -94,6 +93,7 @@ Key::Key(int digNum1, int digNum2) {
     d = x;
     LOGLN("|\t私钥d: " << d);
     LOGLN("===============================");
+
 }
 
 void Key::getPublicKey(BigInt& N, BigInt& E)

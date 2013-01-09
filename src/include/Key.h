@@ -9,11 +9,13 @@ private:
     int digNum;
 	BigInt p, q, n, e, t, d;
 public:
-	Key(int);
-	Key(int, int);
+	Key():digNum(0) {};
+    Key(int digNum){this->digNum = digNum; generate(digNum);};
 	void getPublicKey(BigInt& N, BigInt& E);
 	void getPrivateKey(BigInt& N, BigInt& D);
 	void getDivNum(BigInt& P, BigInt& Q);
+    void generate(int);
+    void quickGenerate(int);
 };
 
 #endif
