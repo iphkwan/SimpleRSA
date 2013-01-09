@@ -29,8 +29,8 @@ int main()
     //test_RSA();
     //test_OAEP();
     //test_stringTrans();
-    //test_example();
-    test_primeGen();
+    test_example();
+    //test_primeGen();
     return 0;
 }
 
@@ -144,7 +144,7 @@ void test_example() {
             t[i] = rsa512.decrypt(t[i]);
             t[i] = cal.oaep_decode(t[i]);
         }
-        string decodeMsg = tran.genMassage(t);
+        string decodeMsg = tran.genMessage(t);
         cout << "--------------------decode-----------------------\n";
         cout << decodeMsg << endl;
         cout << "-------------------------------------------------\n";
@@ -169,7 +169,7 @@ void test_example() {
             t[i] = rsa768.decrypt(t[i]);
             t[i] = cal.oaep_decode(t[i]);
         }
-        string decodeMsg = tran.genMassage(t);
+        string decodeMsg = tran.genMessage(t);
         cout << "--------------------decode-----------------------\n";
         cout << decodeMsg << endl;
         cout << "-------------------------------------------------\n";
@@ -194,7 +194,7 @@ void test_example() {
             t[i] = rsa1024.decrypt(t[i]);
             t[i] = cal.oaep_decode(t[i]);
         }
-        string decodeMsg = tran.genMassage(t);
+        string decodeMsg = tran.genMessage(t);
         cout << "--------------------decode-----------------------\n";
         cout << decodeMsg << endl;
         cout << "-------------------------------------------------\n";
@@ -219,7 +219,7 @@ void test_example() {
             t[i] = rsa2048.decrypt(t[i]);
             t[i] = cal.oaep_decode(t[i]);
         }
-        string decodeMsg = tran.genMassage(t);
+        string decodeMsg = tran.genMessage(t);
         cout << "--------------------decode-----------------------\n";
         cout << decodeMsg << endl;
         cout << "-------------------------------------------------\n";

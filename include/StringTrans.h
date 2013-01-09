@@ -19,9 +19,16 @@ class StringTrans {
             this->split();
         }
         
-        void changeMassage(const string& str) {
+        void changeMessage(const string& str) {
             msg = str;
             this->split();
+        }
+        
+        void setMessage(string a) {
+            this->msg = a;
+        }
+        void setBitLen(int num) {
+            this->BitLen = num;
         }
 
         void split() {
@@ -42,7 +49,7 @@ class StringTrans {
         vector<BigInt> getCode() {
             return code;
         }
-        string genMassage(vector<BigInt>& v) {
+        string genMessage(vector<BigInt>& v) {
             int len = v.size();
             string res, tmp;
             for (int i = 0; i < len; i++) {
