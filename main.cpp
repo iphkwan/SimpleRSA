@@ -317,6 +317,7 @@ void test_RSA() {
         cout << "It may leads error.\n";
         return;
     }
+    // 接收者
     RSA rsa(digNum);
     BigInt test, n, e, p, q;
     rsa.getPublicKey(n, e);
@@ -329,7 +330,8 @@ void test_RSA() {
     cout << "test message: ";
     test.displayByHex();
 
-    BigInt encp = rsa.encrypt(test);
+    // 发送者
+    BigInt encp = RSA::encrypt(test, n, e);
     cout << "after encrypt: ";
     encp.displayByHex();
 

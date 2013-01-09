@@ -96,19 +96,19 @@ void Key::quickGenerate(int digNum) {
 
 }
 
-void Key::getPublicKey(BigInt& N, BigInt& E)
+void Key::getPublicKey(BigInt& N, BigInt& E) const 
 {
     N = this->n;
     E = this->e;
 }
-void Key::getPrivateKey(BigInt& N, BigInt& D)
+void Key::getPrivateKey(BigInt& N, BigInt& D) const
 {
     N = this->n;
     D = this->d;
 }
 
 //This function should not exist. It just help us to demonstrate our work.
-void Key::getDivNum(BigInt& P, BigInt& Q) {
+void Key::getDivNum(BigInt& P, BigInt& Q) const {
     P = this->p;
     Q = this->q;
 }

@@ -1,45 +1,38 @@
 #include "RSA.h"
-#include <string>
-#include <iostream>
 #include "BigInt.h"
 #include "Key.h"
 #include "utils.h"
-using namespace std;
 
-RSA::RSA(int digNum = 512)
+BigInt RSA::encrypt(const BigInt& src, const BigInt& N, const BigInt& E)
 {
-    Key key(digNum / 2);
-    key.getPrivateKey(n, d);
-    key.getPublicKey(n, e);
-    key.getDivNum(p, q);
+    return BigInt::PowerMode(src, E, N);
 }
-RSA::RSA(BigInt n, BigInt e, BigInt d) 
+BigInt RSA::encrypt(const BigInt& src)
 {
-    this->n = n;
-    this->e = e;
-    this->d = d;
+    BigInt N, E;
+    key.getPublicKey(N, E);
+    return RSA::encrypt(src, N, E);
 }
-BigInt RSA::encrypt(BigInt src)
+BigInt RSA::decrypt(const BigInt& src, const BigInt& N, const BigInt& D)
 {
-    return BigInt::PowerMode(src, e, n);
+    return BigInt::PowerMode(src, D, N);
 }
-BigInt RSA::decrypt(BigInt src)
+BigInt RSA::decrypt(const BigInt& src) const
 {
-    return BigInt::PowerMode(src, d, n);
+    BigInt N, D;
+    key.getPrivateKey(N, D);
+    return RSA::decrypt(src, N, D);
 }
-void RSA::getPublicKey(BigInt& N, BigInt& E)
+void RSA::getPublicKey(BigInt& N, BigInt& E) const 
 {
-    N = this->n;
-    E = this->e;
+    key.getPublicKey(N, E);
 }
-void RSA::getPrivateKey(BigInt& N,BigInt& D)
+void RSA::getPrivateKey(BigInt& N,BigInt& D) const
 {
-    N = this->n;
-    D = this->d;
+    key.getPrivateKey(N, D);
 }
 
 //should not exist
-void RSA::getDivNum(BigInt& P, BigInt& Q) {
-    P = this->p;
-    Q = this->q;
+void RSA::getDivNum(BigInt& P, BigInt& Q) const {
+    key.getDivNum(P, Q);
 }
