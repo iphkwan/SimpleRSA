@@ -261,8 +261,11 @@ void test_example() {
 void test_stringTrans() {
     string str;
     getline(cin, str);
-    StringTrans a(str, 16);
-    a.split();
+    StringTrans a(str, 500);
+
+    vector<BigInt> sstr = a.getCode();
+    for (int i = 0; i < sstr.size(); ++ i)
+        cout << sstr[i] << endl;
 }
 
 void test_BigInt() {

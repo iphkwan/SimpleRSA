@@ -11,14 +11,14 @@ class StringTrans {
         int BitLen;
         vector<BigInt> code;
         
+        void split();
     public:
         StringTrans(string a, int b);
         void changeMessage(const string& str);
         void setMessage(string a);
         void setBitLen(int num);
-        void split();
         vector<BigInt> getCode();
-        string genMessage(vector<BigInt>& v);
+        static string genMessage(const vector<BigInt>& v);
 };
 
 #endif

@@ -7,7 +7,7 @@
 #include "utils.h"
 using namespace std;
 
-StringTrans::StringTrans(string a, int b) : msg(a),BitLen(b){
+StringTrans::StringTrans(string a, int b) : msg(a), BitLen(b){
     this->split();
 }
 
@@ -41,7 +41,7 @@ void StringTrans::split() {
 vector<BigInt> StringTrans::getCode() {
     return code;
 }
-string StringTrans::genMessage(vector<BigInt>& v) {
+string StringTrans::genMessage(const vector<BigInt>& v) {
     int len = v.size();
     string res, tmp;
     for (int i = 0; i < len; i++) {
