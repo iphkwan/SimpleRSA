@@ -15,6 +15,7 @@
 #include <ctime>
 #include <vector>
 #include <locale>
+#include "utils.h"
 using namespace std;
 
 void test_BigInt();

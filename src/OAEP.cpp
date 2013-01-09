@@ -4,6 +4,7 @@
 #include "BigInt.h"
 #include "Key.h"
 #include <ctime>
+#include "utils.h"
 using namespace std;
 
 BigInt OAEP::k_to_m(const BigInt& cnt) {

@@ -6,6 +6,7 @@
 #include <ctime>
 #include <string>
 #include <stdlib.h>
+#include "utils.h"
 
 using namespace std;
 
@@ -13,22 +14,15 @@ Key::Key(int digNum)
 {
     this->digNum = digNum;
     srand((unsigned)time(NULL));
-    cout << "********随机产生p,q********" << endl;
-    cout << endl;
+    LOGLN("===========Key===========");
+    LOGLN("| 随机产生p,q");
     p = GeneratePrime(digNum);
-    cout << endl;
-    cout << "产生p:" << endl;
-    p.displayByHex();
-    cout << endl;
+    LOGLN("| \t产生p: " << p);
     q = GeneratePrime(digNum);
-    cout << endl;
-    cout << "产生q:"<<endl;
-    q.displayByHex();
-    cout << endl;
+    LOGLN("| \t产生q: " << q);
+    LOGLN("");
 
-    cout << "********密钥生成********" << endl;
-    cout << endl;
-    cout << "公钥e:" << endl;
+    LOGLN("| 密钥生成");
     t = (p - 1) * (q - 1);
     BigInt x, y, temp;
     while (1)
@@ -42,18 +36,14 @@ Key::Key(int digNum)
         if (temp == 1)
             break;
     }
-    e.displayByHex();
-    cout << endl;
+    LOGLN("| \t公钥e: " << e);
 
-    cout << "公钥n:" << endl;
     n = p * q;
-    n.displayByHex();
-    cout << endl;
+    LOGLN("| \t公钥n: " << n);
 
-    cout << "私钥d:" << endl;	
     d = x;
-    d.displayByHex();
-    cout << endl;
+    LOGLN("| \t私钥d: " << d);
+    LOGLN("=========================");
 }
 
 // quick Generate Key, digNum1 = 256/384/512/1024, digNum2 no uses.
@@ -81,9 +71,8 @@ Key::Key(int digNum1, int digNum2) {
         p.readHexNum(prime1024[i]);
         q.readHexNum(prime1024[j]);
     }
-    cout << "********密钥生成********" << endl;
-    cout << endl;
-    cout << "公钥e:" << endl;
+    LOGLN("======Key QuickGenerate========");
+    LOGLN("| 密钥生成");
     t = (p - 1) * (q - 1);
     BigInt x, y, temp;
     while (1)
@@ -97,18 +86,14 @@ Key::Key(int digNum1, int digNum2) {
         if (temp == 1)
             break;
     }
-    e.displayByHex();
-    cout << endl;
+    LOGLN("|\t公钥e: " << e);
 
-    cout << "公钥n:" << endl;
     n = p * q;
-    n.displayByHex();
-    cout << endl;
+    LOGLN("|\t公钥n: " << n);
 
-    cout << "私钥d:" << endl;	
     d = x;
-    d.displayByHex();
-    cout << endl;
+    LOGLN("|\t私钥d: " << d);
+    LOGLN("===============================");
 }
 
 void Key::getPublicKey(BigInt& N, BigInt& E)

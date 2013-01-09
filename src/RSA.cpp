@@ -3,6 +3,7 @@
 #include <iostream>
 #include "BigInt.h"
 #include "Key.h"
+#include "utils.h"
 using namespace std;
 
 RSA::RSA(int digNum = 512)

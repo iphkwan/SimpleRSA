@@ -1,5 +1,6 @@
 #include "PrimeGen.h"
 #include "BigInt.h"
+#include "utils.h"
 
 //产生一个待测素数,保证此数为奇数,且不能被小于5000的素数整除
 void GenPrime(BigInt& n, int digNum)

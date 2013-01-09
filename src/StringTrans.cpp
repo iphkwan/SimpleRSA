@@ -4,6 +4,7 @@
 #include "BigInt.h"
 #include "OAEP.h"
 #include "RSA.h"
+#include "utils.h"
 using namespace std;
 
 StringTrans::StringTrans(string a, int b) : msg(a),BitLen(b){

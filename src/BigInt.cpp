@@ -1,4 +1,5 @@
 #include "BigInt.h"
+#include "utils.h"
 
 //默认构造函数,成员数据清0
 BigInt::BigInt()
@@ -94,7 +95,7 @@ void BigInt::stringToBigInt(string& buf) {
     cout << "string to BigInt = " << (*this);
 }
 
-string BigInt::BigIntToString() {
+string BigInt::BigIntToString() const {
     string res;
     int len = GetLength();
     unsigned char ch;
@@ -675,7 +676,7 @@ void BigInt::Output(ostream& out) const
     {
         resStr.erase(0,1);
     }
-    out << resStr << endl;
+    out << resStr;
 }
 
 //重载输出操作符
@@ -685,7 +686,7 @@ ostream& operator<< (ostream& out, const BigInt& x)
     return out;
 }
 
-string BigInt::TransformToHexString()
+string BigInt::TransformToHexString() const
 {
     unsigned int temp, result;
     unsigned int filter = 0xf0000000;
