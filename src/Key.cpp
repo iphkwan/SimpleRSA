@@ -13,15 +13,14 @@ using namespace std;
 void Key::generate(int digNum) {
     this->digNum = digNum;
     srand((unsigned)time(NULL));
-    LOGLN("===========Key===========");
-    LOGLN("| 随机产生p,q");
+    LOGLN("Key: 随机产生p,q");
     p = GeneratePrime(digNum);
-    LOGLN("| \t产生p: " << p);
+    LOGLN("\t产生p: " << p);
     q = GeneratePrime(digNum);
-    LOGLN("| \t产生q: " << q);
+    LOGLN("\t产生q: " << q);
     LOGLN("");
 
-    LOGLN("| 密钥生成");
+    LOGLN("Key: 密钥生成");
     t = (p - 1) * (q - 1);
     BigInt x, y, temp;
     while (1)
@@ -35,14 +34,13 @@ void Key::generate(int digNum) {
         if (temp == 1)
             break;
     }
-    LOGLN("| \t公钥e: " << e);
+    LOGLN("    公钥e: " << e);
 
     n = p * q;
-    LOGLN("| \t公钥n: " << n);
+    LOGLN("    公钥n: " << n);
 
     d = x;
-    LOGLN("| \t私钥d: " << d);
-    LOGLN("=========================");
+    LOGLN("    私钥d: " << d);
 
 }
 
@@ -70,8 +68,8 @@ void Key::quickGenerate(int digNum) {
         p.readHexNum(prime1024[i]);
         q.readHexNum(prime1024[j]);
     }
-    LOGLN("======Key QuickGenerate========");
-    LOGLN("| 密钥生成");
+    LOGLN("Key QuickGenerate");
+    LOGLN("Key: 密钥生成");
     t = (p - 1) * (q - 1);
     BigInt x, y, temp;
     while (1)
@@ -85,15 +83,13 @@ void Key::quickGenerate(int digNum) {
         if (temp == 1)
             break;
     }
-    LOGLN("|\t公钥e: " << e);
+    LOGLN("    公钥e: " << e);
 
     n = p * q;
-    LOGLN("|\t公钥n: " << n);
+    LOGLN("    公钥n: " << n);
 
     d = x;
-    LOGLN("|\t私钥d: " << d);
-    LOGLN("===============================");
-
+    LOGLN("    私钥d: " << d);
 }
 
 void Key::getPublicKey(BigInt& N, BigInt& E) const 

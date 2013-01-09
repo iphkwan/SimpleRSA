@@ -34,8 +34,8 @@ int main()
     //test_OAEP();
     //test_stringTrans();
     //test_example();
-    //test_primeGen();
-    test_fastKeyGen();
+    test_primeGen();
+    //test_fastKeyGen();
     return 0;
 }
 
@@ -95,7 +95,7 @@ void test_primeGen() {
         cnt = clock();
         cout << "prime = " << tmp;
         cout << "Time used: " << fixed << setprecision(4) << ((double)(cnt - last) / CLOCKS_PER_SEC) << "s" << endl;
-        fp << "prime = " << tmp;
+        fp << "prime = " << tmp << endl;
         fp << "Time used: " << fixed << setprecision(4) << ((double)(cnt - last) / CLOCKS_PER_SEC) << "s" << endl;
     }
     fp.close();

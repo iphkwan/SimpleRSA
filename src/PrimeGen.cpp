@@ -2,10 +2,14 @@
 #include "BigInt.h"
 #include "utils.h"
 
-//产生一个待测素数,保证此数为奇数,且不能被小于5000的素数整除
+/**
+ * 产生一个待测素数,保证此数为奇数,且不能被小于5000的素数整除
+ *
+ * @param [out] n
+ * @param [in] digNum 位数
+ */
 void GenPrime(BigInt& n, int digNum)
 {
-    cout << "产生一个待测素数" << endl;
     int i = 0;
     BigInt divisor;
     const int length = sizeof(prime) / sizeof(int);
@@ -22,10 +26,16 @@ void GenPrime(BigInt& n, int digNum)
 		        break;
 	    }
     }
-    cout << "test_prime = " << n << endl;
 }
 
-bool RobinMiller(const BigInt& n, int digNum)
+/**
+ * Rabin-Miller 素性测试
+ *
+ * @param n
+ * @param digNum 位数
+ * @return true: 是素数, false: 不是素数
+ */
+bool RabinMiller(const BigInt& n, int digNum)
 {
     BigInt r, a, y;
     unsigned int s, j;
@@ -66,20 +76,21 @@ BigInt GeneratePrime(int digNum)
 {
     BigInt n;
     int i = 0;
+    LOGLN("GeneratePrime 生成素数");
     while (i < 5)
     {
 	    //产生一个待测素数
 	    GenPrime(n, digNum);
+        LOGLN("    待测数:" << n);
 	    i = 0;
 	    //进行五轮ROBINMILLER测试,五轮全部通过则素数合格
 	    //理论素数合格率达99.9%
 	    for ( ; i < 5; i++)
 	    {
-	        cout << "进行第" << i + 1 << "轮RobinMiller测试" << endl;
-	        if (!RobinMiller(n, digNum))
+            LOGLN("        第" << i + 1 << "轮Rabin-Miller测试");
+	        if (!RabinMiller(n, digNum))
 	        {
-		        cout << "测试失败!"<< endl;
-		        cout << endl;
+		        LOGLN("        测试失败!");
 		        break;
 	        }
 	    }

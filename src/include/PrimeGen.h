@@ -3,8 +3,12 @@
 
 #include "BigInt.h"
 
-void GenPrime(BigInt& n, int digNum);
-bool RobinMiller(const BigInt& n, int digNum);
+/**
+ * 生成素数
+ *
+ * @param digNum 位数
+ * @return 素数
+ */
 BigInt GeneratePrime(int digNum);
 
 
