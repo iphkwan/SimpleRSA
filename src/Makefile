@@ -4,7 +4,7 @@ CFLAGS = -c -Iinclude
 all: libRSA.a
 
 libRSA.a: $(OBJS)
-	ar crv $@ $^
+	ar cr $@ $^
 	
 %.o: %.cpp
 	$(CXX) $(CFLAGS) $< -o $@

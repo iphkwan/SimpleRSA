@@ -3,7 +3,7 @@
 //默认构造函数,成员数据清0
 BigInt::BigInt()
 {
-    for(int i=0 ;i<size ;i++)
+    for(int i=0 ;i < _capacity;i++)
         data[i]=0;
     sign=true; 
 }
@@ -12,7 +12,7 @@ BigInt::BigInt()
 //用int初始化大数
 BigInt::BigInt(const int& input)
 {
-    for(int i=0 ;i<size ;i++)
+    for(int i=0 ;i<_capacity ;i++)
         data[i]=0;
     data[0]=input;
     if(input>=0)
@@ -24,7 +24,7 @@ BigInt::BigInt(const int& input)
 //用大数给大数赋值
 BigInt::BigInt(const BigInt& input)
 {
-    for(int i = 0; i < size; i++)
+    for(int i = 0; i < _capacity; i++)
         data[i] = input.data[i];
     sign = input.sign;
 }
@@ -132,7 +132,7 @@ string BigInt::BigIntToString() {
 //用大数给大数赋值
 BigInt& BigInt::operator= (const BigInt& input)
 {
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < _capacity; i++)
         data[i] = input.data[i];
     sign = input.sign;
     return *this;
@@ -141,7 +141,7 @@ BigInt& BigInt::operator= (const BigInt& input)
 //比较两个大数的大小,a<b,返回真,否则返回假
 bool BigInt::operator< (const BigInt& b) const
 {
-    for (int i = size - 1; i > 0; i--)
+    for (int i = _capacity - 1; i > 0; i--)
     {
         if (this->data[i] < b.data[i])
             return true;
@@ -154,7 +154,7 @@ bool BigInt::operator< (const BigInt& b) const
 //比较两个大数的大小,a>b,返回真,否则返回假
 bool BigInt::operator> (const BigInt& b) const
 {
-    for (int i = size - 1; i >= 0; i--)
+    for (int i = _capacity - 1; i >= 0; i--)
     {
         if (this->data[i] > b.data[i])
             return true;
@@ -167,7 +167,7 @@ bool BigInt::operator> (const BigInt& b) const
 //判断两个大数是否相等,相等返回真,否则返回假
 bool BigInt::operator== (const BigInt& b) const
 {
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < _capacity; i++)
         if (this->data[i] != b.data[i])
             return false;
     return true;
@@ -276,7 +276,7 @@ BigInt BigInt::operator- (const BigInt& b) const
         }
 
         //每一位进行竖式减
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < _capacity; i++)
         {
             sub = tempb.data[i] + carry;
             if (tempa.data[i] >= sub)
@@ -299,7 +299,7 @@ BigInt BigInt::operator- (const BigInt& b) const
     else
     {
         //每一位进行竖式相加
-        for (int i = 0; i < size; i++)
+        for (int i = 0; i < _capacity; i++)
         {
             sum = (unsigned long long)this->data[i] + b.data[i] + carry;
             result.data[i] = (unsigned int)sum;
@@ -329,7 +329,7 @@ BigInt BigInt::operator* (const unsigned int& b) const
     //存放进位
     unsigned int carry = 0;
 
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < _capacity; i++)
     {
         sum = ((unsigned long long)this->data[i]) * b + carry;
         result.data[i] = (unsigned int)sum;
@@ -358,7 +358,7 @@ BigInt BigInt::operator* (const BigInt& b) const
         for (int j = 0; j < this->GetLength() + 1; j++)
         {
             sum = ((unsigned long long)this->data[j]) * b.data[i] + carry;
-            if ((i + j) < size)
+            if ((i + j) < _capacity)
                 temp.data[i + j] = (unsigned int)sum;
             carry = (sum>>32);
         }
@@ -736,15 +736,15 @@ string BigInt::TransformToHexString()
 //大数置0
 void BigInt::Clear()
 {
-    for (int i = 0; i < size; i++)
+    for (int i = 0; i < _capacity; i++)
         data[i] = 0;
 }
 
 //返回大数长度
 int BigInt::GetLength() const
 {
-    int length = size;
-    for (int i = size - 1; i >= 0; i--)
+    int length = _capacity;
+    for (int i = _capacity - 1; i >= 0; i--)
     {
         //第一位不为0即为LENGTH
         if (data[i] == 0)

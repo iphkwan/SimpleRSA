@@ -6,7 +6,6 @@
 #include "globalData.h"
 
 using namespace std;
-const int size = 128 + 1;
 
 class BigInt {
 public:
@@ -61,33 +60,9 @@ public:
 	
     void GenPrime(BigInt& n,int digNum);
 private:
-    unsigned int data[size];
+	static const size_t _capacity = 128 + 1;
+    unsigned int data[_capacity];
     bool sign;
 };
-
-/*
-BigInt operator+ (const BigInt&, const BigInt&);
-BigInt operator- (const BigInt&, const BigInt&);
-BigInt operator- (const BigInt&, const int&);
-BigInt operator* (const BigInt&, const BigInt&);
-BigInt operator/ (const BigInt&, const BigInt&);
-BigInt operator% (const BigInt&, const BigInt&);
-int operator% (const BigInt&,const int&);
-BigInt operator& (const BigInt&, const BigInt&);
-BigInt operator^ (const BigInt&, const BigInt&);
-BigInt operator| (const BigInt&, const BigInt&);
-
-BigInt operator* (const BigInt&, const unsigned int&);
-bool operator< (const BigInt&, const BigInt&);
-bool operator> (const BigInt&, const BigInt&);
-bool operator<= (const BigInt&, const int&);
-bool operator== (const BigInt&, const BigInt&);
-bool operator== (const BigInt&, const int&);
-ostream& operator<< (ostream&, const BigInt&);
-BigInt PowerMode (const BigInt& n, const BigInt& p, const BigInt& m);
-BigInt Gcd(const BigInt& m,const BigInt& n);
-BigInt Euc(BigInt& E,BigInt& A);
-
-*/
 
 #endif
