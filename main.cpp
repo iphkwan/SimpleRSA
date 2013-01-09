@@ -23,6 +23,7 @@ void test_OAEP();
 void test_stringTrans();
 void test_example();
 void test_primeGen();
+void test_fastKeyGen();
 
 int main()
 {
@@ -31,9 +32,30 @@ int main()
     //test_RSA();
     //test_OAEP();
     //test_stringTrans();
-    test_example();
+    //test_example();
     //test_primeGen();
+    test_fastKeyGen();
     return 0;
+}
+
+void test_fastKeyGen() {
+    clock_t last, cnt;
+    last = clock();
+    Key key256(256, 256);
+    cnt = clock();
+    printf("RSA-512 Time used: %.4lfs\n", (double)(cnt - last) / CLOCKS_PER_SEC);
+    last = clock();
+    Key key384(384, 384);
+    cnt = clock();
+    printf("RSA-768 Time used: %.4lfs\n", (double)(cnt - last) / CLOCKS_PER_SEC);
+    last = clock();
+    Key key512(512, 512);
+    cnt = clock();
+    printf("RSA-1024 Time used: %.4lfs\n", (double)(cnt - last) / CLOCKS_PER_SEC);
+    last = clock();
+    Key key1024(1024, 1024);
+    cnt = clock();
+    printf("RSA-2048 Time used: %.4lfs\n", (double)(cnt - last) / CLOCKS_PER_SEC);
 }
 
 void test_primeGen() {
