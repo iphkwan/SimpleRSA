@@ -1,6 +1,4 @@
-#ifndef PRIMEGEN_H_
-#define PRIMEGEN_H_
-
+#include "PrimeGen.h"
 #include "BigInt.h"
 
 //产生一个待测素数,保证此数为奇数,且不能被小于5000的素数整除
@@ -43,7 +41,7 @@ bool RobinMiller(const BigInt& n, int digNum)
     //产生一个小于N-1的检测随机数
     a.Randomsmall(digNum);
 
-    y = PowerMode(a, r, n);
+    y = BigInt::PowerMode(a, r, n);
 
     //检测J=2至J<S轮
     if((!(y == 1)) && (!(y == (n - 1))))
@@ -87,5 +85,3 @@ BigInt GeneratePrime(int digNum)
     }
     return n;
 }
-
-#endif

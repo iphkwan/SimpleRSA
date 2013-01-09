@@ -1,9 +1,12 @@
-CFLAGS = -c -Iinclude
+CFLAGS = -c -Isrc/include
 
-all: simplersa
+all: simplersa 
 
-simplersa: main.o
-	$(CXX) $^ -o $@
+src/libRSA.a: src/Makefile
+	cd src/ && make
+
+simplersa: main.o src/libRSA.a
+	$(CXX) $^  -o $@
 
 %.o: %.cpp
 	$(CXX) $(CFLAGS) $^ -o $@
@@ -11,4 +14,4 @@ simplersa: main.o
 main.o: main.cpp 
 
 clean:
-	rm -f simplersa main.o
+	rm -f simplersa
