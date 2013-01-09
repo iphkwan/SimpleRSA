@@ -12,13 +12,13 @@ class StringTrans {
         vector<BigInt> code;
         
     public:
-		StringTrans(string a, int b);
-		void changeMessage(const string& str);
-		void setMessage(string a);
-		void setBitLen(int num);
-		void split();
-		vector<BigInt> getCode();
-		string genMessage(vector<BigInt>& v);
+        StringTrans(string a, int b);
+        void changeMessage(const string& str);
+        void setMessage(string a);
+        void setBitLen(int num);
+        void split();
+        vector<BigInt> getCode();
+        string genMessage(vector<BigInt>& v);
 };
 
 #endif

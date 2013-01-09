@@ -42,7 +42,7 @@ void OAEP::changeMode(int k, int m) {
 }
 BigInt OAEP::oaep_encode(const BigInt& cnt) {
     BigInt r, tmp, P1, P2;
-    LOGLN("OAEP: Encode Msg: " << cnt);
+    LOGLN("OAEP: Msg: " << cnt);
     srand((unsigned) time(NULL));
     r.Random(K);
     LOGLN("OAEP: Random Number: " << r);
@@ -75,7 +75,6 @@ BigInt OAEP::oaep_decode(const BigInt& cnt) {
 
     tmp = m_to_k(P1);
     r = (tmp ^ P2);
-    LOGLN("OAEP: Decoded Msg: " << cnt);
 
     tmp = k_to_m(r);
     res = (tmp ^ P1);

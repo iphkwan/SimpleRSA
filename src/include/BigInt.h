@@ -9,9 +9,9 @@ using namespace std;
 
 class BigInt {
 public:
-	/**
-	 * 无参构造函数，默认为0
-	 */
+    /**
+     * 无参构造函数，默认为0
+     */
     BigInt();
 
     /**
@@ -198,7 +198,7 @@ public:
      * @param [in] A
      * @return gcd(E, A)
      */
-	static BigInt Euc(BigInt& E,BigInt& A);
+    static BigInt Euc(BigInt& E,BigInt& A);
 
     /**
      * 扩展欧几里得算法，求乘法模逆
@@ -209,9 +209,9 @@ public:
      * @param [out] y b mod a的乘法逆元
      * @return gcd(a, b)
      */
-	static BigInt ExtendedGcd(const BigInt& a, const BigInt& b, BigInt& x, BigInt& y);
+    static BigInt ExtendedGcd(const BigInt& a, const BigInt& b, BigInt& x, BigInt& y);
 private:
-	static const size_t _capacity = 128 + 1;
+    static const size_t _capacity = 128 + 1;
     unsigned int data[_capacity];
     bool sign;
     /**
