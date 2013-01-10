@@ -33,11 +33,12 @@ int main()
     //test_BigInt();
     //test_RSA();
     //test_OAEP();
+    //test_OAEP();
     //test_stringTrans();
     //test_example();
     //test_primeGen();
-    //test_fastKeyGen();
-    test_encrypt();
+    test_fastKeyGen();
+    //test_encrypt();
     /*
     BigInt a;
     fstream fd;
