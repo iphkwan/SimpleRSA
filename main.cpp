@@ -25,6 +25,7 @@ void test_stringTrans();
 void test_example();
 void test_primeGen();
 void test_fastKeyGen();
+void test_encrypt();
 
 int main()
 {
@@ -32,11 +33,110 @@ int main()
     //test_BigInt();
     //test_RSA();
     //test_OAEP();
-    test_stringTrans();
+    //test_stringTrans();
     //test_example();
     //test_primeGen();
     //test_fastKeyGen();
+    test_encrypt();
+    /*
+    BigInt a;
+    fstream fd;
+    fd.open("1024datafile.txt", ios::out);
+    for (int i = 0; i < 100; ++ i) {
+        for (int j = 0; j < 4; ++ j) {
+            a.Random(1024);
+            fd << a;
+        }
+        fd << endl;
+    }
+    fd.close();
+    */
     return 0;
+}
+
+void test_encrypt() {
+    ifstream inp("1024datafile.txt");
+    cout << "Input RSA model[512, 768, 1024, 2048]: ";
+    int model;
+    cin >> model;
+    RSA rsa(model);
+
+    bool isoaep;
+    cout << "Enable OAEP? [y|n] ";
+    char i;
+    cin >> i;
+    switch (i) {
+        case 'y':
+        case 'Y':
+            isoaep = true;
+            break;
+        case 'n':
+        case 'N':
+            isoaep = false;
+            break;
+        default:
+            cout << "Input error" << endl;
+            exit(1);
+            break;
+    }
+
+    cout << "Roop times[1-100]: ";
+    int t;
+    cin >> t;
+
+    ofstream op;
+    if (!isoaep)
+        switch (model) {
+            case 512:
+                op.open("./data/512-1024encrypt.txt", ios::app);
+                break;
+            case 768:
+                op.open("./data/768-1024encrypt.txt", ios::app);
+                break;
+            case 1024:
+                op.open("./data/1024-1024encrypt.txt", ios::app);
+                break;
+            case 2048:
+                op.open("./data/2048-1024encrypt.txt", ios::app);
+                break;
+        }
+    else
+        switch (model) {
+            case 512:
+                op.open("./data/512-1024encrypt-oaep.txt", ios::app);
+                break;
+            case 768:
+                op.open("./data/768-1024encrypt-oaep.txt", ios::app);
+                break;
+            case 1024:
+                op.open("./data/1024-1024encrypt-oaep.txt", ios::app);
+                break;
+            case 2048:
+                op.open("./data/2048-1024encrypt-oaep.txt", ios::app);
+                break;
+        }
+    op << setiosflags(ios::fixed);
+    clock_t last, cur;
+
+    OAEP oaep(12, model - 12);
+    for (int i = 0; i < t; ++ i) {
+        cout << "Roop " << i + 1 << endl;
+        string msg;
+        inp >> msg;
+        StringTrans trans(msg, model - 12);
+        vector<BigInt> c = trans.getCode();
+        last = clock();
+        for (int j = 0; j < c.size(); ++ j) {
+            BigInt a = c[j];
+            if (isoaep)
+                a = oaep.oaep_encode(a);
+            BigInt enc = rsa.encrypt(a);
+        }
+        cur = clock();
+        op << model << ": " << setprecision(4) << (double) (cur - last) / CLOCKS_PER_SEC << endl;
+    }
+    op.close();
+    inp.close();
 }
 
 void test_fastKeyGen() {
