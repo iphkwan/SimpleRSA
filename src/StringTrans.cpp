@@ -25,7 +25,7 @@ void StringTrans::setBitLen(int num) {
 
 void StringTrans::split() {
     int n = 0;
-    int StrLen = BitLen / 8 - 2;
+    int StrLen = BitLen / 8;
     code.clear();
     do
     {
