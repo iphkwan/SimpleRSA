@@ -119,12 +119,16 @@ void test_encrypt() {
     clock_t last, cur;
 
     OAEP oaep(12, model - 12);
+    StringTrans* trans;
     for (int i = 0; i < t; ++ i) {
-        cout << "Roop " << i + 1 << endl;
+        cout << "Roop " << i + 1;
         string msg;
         inp >> msg;
-        StringTrans trans(msg, model - 12);
-        vector<BigInt> c = trans.getCode();
+        if (isoaep)
+            trans = new StringTrans(msg, model - 12);
+        else
+            trans = new StringTrans(msg, model);
+        vector<BigInt> c = trans->getCode();
         last = clock();
         for (int j = 0; j < c.size(); ++ j) {
             BigInt a = c[j];
@@ -133,7 +137,9 @@ void test_encrypt() {
             BigInt enc = rsa.encrypt(a);
         }
         cur = clock();
-        op << model << ": " << setprecision(4) << (double) (cur - last) / CLOCKS_PER_SEC << endl;
+        op << setprecision(4) << (double) (cur - last) / CLOCKS_PER_SEC << endl;
+        cout << "  " << (double) (cur - last) / CLOCKS_PER_SEC << endl;
+        delete trans;
     }
     op.close();
     inp.close();
