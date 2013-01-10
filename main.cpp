@@ -37,8 +37,8 @@ int main()
     //test_stringTrans();
     //test_example();
     //test_primeGen();
-    test_fastKeyGen();
-    //test_encrypt();
+    //test_fastKeyGen();
+    test_encrypt();
     /*
     BigInt a;
     fstream fd;
@@ -122,7 +122,7 @@ void test_encrypt() {
     OAEP oaep(12, model - 12);
     StringTrans* trans;
     for (int i = 0; i < t; ++ i) {
-        cout << "Roop " << i + 1;
+        cout << "Roop " << i + 1 << endl;
         string msg;
         inp >> msg;
         if (isoaep)

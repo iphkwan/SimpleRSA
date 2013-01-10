@@ -42,10 +42,8 @@ void OAEP::changeMode(int k, int m) {
 }
 BigInt OAEP::oaep_encode(const BigInt& cnt) {
     BigInt r, tmp, P1, P2;
-    LOGLN("OAEP: Msg: " << cnt);
     srand((unsigned) time(NULL));
     r.Random(K);
-    LOGLN("OAEP: Random Number: " << r);
     tmp = k_to_m(r);
     P1 = cnt ^ tmp;
 
@@ -56,13 +54,11 @@ BigInt OAEP::oaep_encode(const BigInt& cnt) {
         P1 = (P1 << 16);
     P1 = (P1 << (K % 16));
     P1 = P1 | P2;
-    LOGLN("OAEP: Encoded Msg: " << P1);
     return P1;
 }
 BigInt OAEP::oaep_decode(const BigInt& cnt) {
     BigInt r, tmp, P1(cnt), P2, res;
     BigInt filter(1);
-    LOGLN("OAEP: Encoded Msg: " << cnt);
     for (int i = 0; i < K/16; i++)
         filter = (filter << 16);
     filter = (filter << (K % 16));
@@ -78,6 +74,5 @@ BigInt OAEP::oaep_decode(const BigInt& cnt) {
 
     tmp = k_to_m(r);
     res = (tmp ^ P1);
-    LOGLN("OAEP: Decoded Msg: " << res);
     return res;
 }
