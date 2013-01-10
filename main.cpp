@@ -92,7 +92,7 @@ void test_message() {
     cin >> model;
 
     RSA rsa(model);
-    StringTrans st(msg, model - 16 - 1);
+    StringTrans st(msg, model - 26);
     
     BigInt N, E, D;
     rsa.getPublicKey(N, E);
@@ -101,8 +101,9 @@ void test_message() {
 
     cout << "Message is " << st.toString() << endl;
 
-    OAEP oaep(16, model - 16 - 1);
+    OAEP oaep(16, model - 26);
     for (int i = 0; i < st.size(); ++ i) {
+        cout << st[i].GetBitLength() << endl;
         st[i] = oaep.encode(st[i]);
     }
 
@@ -494,11 +495,9 @@ void test_RSA() {
     BigInt test, n, e, p, q;
     rsa.getPublicKey(n, e);
     cout << "Generating test message...\n";
-    test.Random(digNum);
+    test.Random(digNum - 1);
     while (!(test < n)) {
-        test.Random(digNum);
-        cout << "N=" << n << endl;
-        cout << "t=" << test << endl;
+        test.Random(digNum - 1);
     }
     cout << "test message: " << test << endl;
 
