@@ -15,9 +15,9 @@ void Key::generate(int digNum) {
     srand((unsigned)time(NULL));
     LOGLN("Key: 随机产生p,q");
     p = GeneratePrime(digNum);
-    LOGLN("\t产生p: " << p);
     q = GeneratePrime(digNum);
-    LOGLN("\t产生q: " << q);
+    LOGLN("    产生p: " << p);
+    LOGLN("    产生q: " << q);
     LOGLN("");
 
     LOGLN("Key: 密钥生成");
