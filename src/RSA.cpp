@@ -7,7 +7,7 @@ BigInt RSA::encrypt(const BigInt& src, const BigInt& N, const BigInt& E)
 {
     return BigInt::PowerMode(src, E, N);
 }
-BigInt RSA::encrypt(const BigInt& src)
+BigInt RSA::encrypt(const BigInt& src) const
 {
     BigInt N, E;
     key.getPublicKey(N, E);
@@ -32,7 +32,3 @@ void RSA::getPrivateKey(BigInt& N,BigInt& D) const
     key.getPrivateKey(N, D);
 }
 
-//should not exist
-void RSA::getDivNum(BigInt& P, BigInt& Q) const {
-    key.getDivNum(P, Q);
-}

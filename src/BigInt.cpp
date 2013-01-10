@@ -29,7 +29,26 @@ BigInt::BigInt(const BigInt& input)
         data[i] = input.data[i];
     sign = input.sign;
 }
-void BigInt::readHexNum(string& str)
+
+BigInt::BigInt(string str, int base) {
+    switch (base) {
+        case 2:
+            GenFromBinString(str);
+            break;
+        case 10:
+            GenFromDecString(str);
+            break;
+        case 16:
+            GenFromHexString(str);
+            break;
+        default:
+            LOGLN("BigInt: Error base");
+            exit(1);
+            break;
+    }
+}
+
+void BigInt::GenFromHexString(string str)
 {
     Clear();
     int index = 0;
@@ -40,17 +59,17 @@ void BigInt::readHexNum(string& str)
         unsigned int cur = 0;
         for(int i = 0; i < 8; i++)
         {
-            cur = cur * 16 + hexCharToInt(seg[i]);
+            cur = cur * 16 + _hexCharToInt(seg[i]);
         }
         data[index++] = cur;
     }
     unsigned int cur = 0;
     for (int i = 0; i < str.length(); i++)
-        cur = cur * 16 + hexCharToInt(str[i]);
+        cur = cur * 16 + _hexCharToInt(str[i]);
     data[index] = cur;
 }
 
-void BigInt::readBinaryNum(string& str)
+void BigInt::GenFromBinString(string str)
 {
     Clear();
     int index = 0;
@@ -71,7 +90,7 @@ void BigInt::readBinaryNum(string& str)
     data[index] = cur;
 }
 
-void BigInt::stringToBigInt(string& buf) {
+void BigInt::GenFromDecString(string& buf) {
     int len = buf.length();
     unsigned int s1, s2, s3, s4;
     Clear();
@@ -94,7 +113,7 @@ void BigInt::stringToBigInt(string& buf) {
     }
 }
 
-string BigInt::BigIntToString() const {
+string BigInt::ToString() const {
     string res;
     int len = GetLength();
     unsigned char ch;
@@ -576,59 +595,9 @@ BigInt BigInt::operator| (const BigInt& b) const {
     return res;
 }
 
-//将大数以16进制显示到屏幕上
-void BigInt::displayByHex() const
-{
-    unsigned int temp, result;
-    unsigned int filter = 0xf0000000;
-    string resStr;
-    for (int i = GetLength() - 1; i >= 0; i--)
-    {
-        temp = data[i];
-        //大数的每一位数字转换成16进制输出
-        for (int j = 0; j < 8; j++)
-        {
-            result = temp & filter;
-            result = (result >> 28);
-            temp = (temp << 4);
-            if (result >= 0 && result <= 9)
-                resStr += (result + '0');
-            else
-            {
-                switch (result)
-                {
-                case 10:
-                    resStr += 'A';
-                    break;
-                case 11:
-                    resStr += 'B';
-                    break;
-                case 12:
-                    resStr += 'C';
-                    break;
-                case 13:
-                    resStr += 'D';
-                    break;
-                case 14:
-                    resStr += 'E';
-                    break;
-                case 15:
-                    resStr += 'F';
-                    break;
-                }           
-            }
-        }
-    }
-    while (resStr[0] == '0')
-    {
-        resStr.erase(0,1);
-    }
-    cout << resStr;
-    cout<<endl;
-}
 
 //将大数输出到输入输出流
-void BigInt::Output(ostream& out) const
+void BigInt::_output(ostream& out) const
 {
     unsigned int temp, result;
     unsigned int filter = 0xf0000000;
@@ -680,11 +649,11 @@ void BigInt::Output(ostream& out) const
 //重载输出操作符
 ostream& operator<< (ostream& out, const BigInt& x)
 {
-    x.Output(out);
+    x._output(out);
     return out;
 }
 
-string BigInt::TransformToHexString() const
+string BigInt::ToHexString() const
 {
     unsigned int temp, result;
     unsigned int filter = 0xf0000000;
@@ -832,7 +801,7 @@ BigInt BigInt::PowerMode (const BigInt& n, const BigInt& p, const BigInt& m)
     return ( r * k ) % m;
 }
 
-char BigInt::intToHexChar(int n)
+char BigInt::_intToHexChar(int n)
 {
     char c;
     if (n >= 0 && n <= 9)
@@ -862,7 +831,8 @@ char BigInt::intToHexChar(int n)
     }
     return c;
 }
-int BigInt::hexCharToInt(char c)
+
+int BigInt::_hexCharToInt(char c)
 {
     if (c >= '0' && c <= '9')
         return c - '0';
@@ -889,7 +859,7 @@ int BigInt::hexCharToInt(char c)
         default:
             break;
     }
-    cout << "error" << endl;
+    LOGLN("BigInt: hexCharToInt error");
     exit(0);
 }
 

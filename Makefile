@@ -1,4 +1,4 @@
-CFLAGS = -c -Isrc/include
+CFLAGS = -c -Iinclude
 
 all: simplersa 
 

@@ -14,18 +14,16 @@ class RSA
          * 构造函数
          *
          * @param digNum 密钥长度
+         * @param fast 是否采取快速生成素数
          */
-        RSA(int digNum = 512) : key(digNum / 2) {};
+        RSA(int digNum = 512, bool fast = false) : key(digNum / 2, fast) {};
         
         /**
          * 已知n, e, d
          *
-         * @param n
-         * @param e 公钥
-         * @param d 私钥
+         * @param key
          */
-        RSA(BigInt& n, BigInt& e, BigInt& d)
-            :key(n, e, d) {};
+        RSA(const Key& key) :key(key) {};
 
         /**
          * 对消息进行加密
@@ -34,7 +32,7 @@ class RSA
          * @return 加密后的消息
          */
         static BigInt encrypt(const BigInt& src, const BigInt& N, const BigInt& E);
-        BigInt encrypt(const BigInt& src);
+        BigInt encrypt(const BigInt& src) const;
 
         /**
          * 对消息进行解密

@@ -36,11 +36,8 @@ OAEP::OAEP(int k, int m) {
     this->K = k;
     this->M = m;
 }
-void OAEP::changeMode(int k, int m) {
-    this->K = k;
-    this->M = m;
-}
-BigInt OAEP::oaep_encode(const BigInt& cnt) {
+
+BigInt OAEP::encode(const BigInt& cnt) {
     BigInt r, tmp, P1, P2;
     srand((unsigned) time(NULL));
     r.Random(K);
@@ -56,7 +53,8 @@ BigInt OAEP::oaep_encode(const BigInt& cnt) {
     P1 = P1 | P2;
     return P1;
 }
-BigInt OAEP::oaep_decode(const BigInt& cnt) {
+
+BigInt OAEP::decode(const BigInt& cnt) {
     BigInt r, tmp, P1(cnt), P2, res;
     BigInt filter(1);
     for (int i = 0; i < K/16; i++)
