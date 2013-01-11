@@ -88,7 +88,7 @@ void test_message() {
     string msg;
     cin >> msg;
     int model;
-    cout << "Model: ";
+    cout << "Model[256|512|768|1024|2048]: ";
     cin >> model;
 
     RSA rsa(model);
@@ -96,14 +96,11 @@ void test_message() {
     
     BigInt N, E, D;
     rsa.getPublicKey(N, E);
-    cout << "N=" << N << endl;
-    cout << "E=" << E << endl;
 
     cout << "Message is " << st.toString() << endl;
 
     OAEP oaep(16, model - 26);
     for (int i = 0; i < st.size(); ++ i) {
-        cout << st[i].GetBitLength() << endl;
         st[i] = oaep.encode(st[i]);
     }
 
@@ -131,7 +128,7 @@ void test_encrypt() {
     cout << "Input RSA model[512, 768, 1024, 2048]: ";
     int model;
     cin >> model;
-    RSA rsa(model, true);
+    RSA rsa(model, false);
 
     bool isoaep;
     cout << "Enable OAEP? [y|n] ";
@@ -190,16 +187,16 @@ void test_encrypt() {
     op << setiosflags(ios::fixed);
     clock_t last, cur;
 
-    OAEP oaep(12, model - 12);
+    OAEP oaep(12, model - 22);
     StringTrans* trans;
     for (int i = 0; i < t; ++ i) {
         cout << "Roop " << i + 1 << endl;
         string msg;
         inp >> msg;
         if (isoaep)
-            trans = new StringTrans(msg, model - 12);
+            trans = new StringTrans(msg, model - 22);
         else
-            trans = new StringTrans(msg, model);
+            trans = new StringTrans(msg, model - 10);
         last = clock();
         for (int j = 0; j < trans->size(); ++ j) {
             BigInt a = (*trans)[j];
