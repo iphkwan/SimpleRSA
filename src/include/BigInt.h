@@ -29,45 +29,46 @@ public:
     BigInt(const BigInt&); 
 
     /**
+     * 构造函数，从16进制字符串构造
+     *
+     * @param [in] str
+     * @param [in] base 进制(2, 10, 16)
+     */
+    BigInt(string, int);
+    /**
      * 从16进制字符串读入数据
      *
      * @param str 16进制字符串
      */
-    void readHexNum(string& str);
+    void GenFromHexString(string str);
 
     /**
      * 从2进制字符串读入数据
      *
      * @param buf  2进制字符串
      */
-    void readBinaryNum(string& buf);
+    void GenFromBinString(string buf);
 
     /**
      * 从10进制字符串读入数据
      *
      * @param buf  10进制字符串
      */
-    void stringToBigInt(string& buf);
+    void GenFromDecString(string& buf);
 
     /**
      * 把大数转换成10进制字符串
      *
      * @return 大数10进制字符串
      */
-    string BigIntToString() const;
+    string ToString() const;
 
     /**
      * 把大数转换成16进制字符串
      *
      * @return 大数16进制字符串
      */
-    string TransformToHexString() const;
-
-    /**
-     * 把大数转换成16进制字符串并输出到stdout
-     *
-     */
-    void displayByHex() const;
+    string ToHexString() const;
 
     /**
      * 赋值运算符（深拷贝）
@@ -219,10 +220,10 @@ private:
      *
      * @param out 输出流
      */
-    void Output(ostream& out) const;
+    void _output(ostream& out) const;
 
-    int hexCharToInt(char c);
-    char intToHexChar(int c);
+    int _hexCharToInt(char c);
+    char _intToHexChar(int c);
 };
 
 #endif

@@ -1,4 +1,4 @@
-CFLAGS = -c -Isrc/include
+CFLAGS = -c -Iinclude -finput-charset=utf-8
 
 all: simplersa 
 

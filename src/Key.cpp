@@ -13,15 +13,12 @@ using namespace std;
 void Key::generate(int digNum) {
     this->digNum = digNum;
     srand((unsigned)time(NULL));
-    LOGLN("Key: 随机产生p,q");
-    p = GeneratePrime(digNum);
-    q = GeneratePrime(digNum);
-    LOGLN("    产生p: " << p);
-    LOGLN("    产生q: " << q);
-    LOGLN("");
+    
+    BigInt p(GeneratePrime(digNum));
+    BigInt q(GeneratePrime(digNum));
 
     LOGLN("Key: 密钥生成");
-    t = (p - 1) * (q - 1);
+    BigInt t = (p - 1) * (q - 1);
     BigInt x, y, temp;
     while (1)
     {
@@ -52,25 +49,27 @@ void Key::quickGenerate(int digNum) {
     j = rand() % 10;
     while (j == i)
         j = rand() % 10;
+
+    BigInt *p, *q;
+
     if (digNum == 256) {
-        p.readHexNum(prime256[i]);
-        q.readHexNum(prime256[j]);
+        p = new BigInt(prime256[i], 16);
+        q = new BigInt(prime256[j], 16);
     }
     else if (digNum == 384) {
-        p.readHexNum(prime384[i]);
-        q.readHexNum(prime384[j]);
+        p = new BigInt(prime384[i], 16);
+        q = new BigInt(prime384[j], 16);
     }
     else if (digNum == 512) {
-        p.readHexNum(prime512[i]);
-        q.readHexNum(prime512[j]);
+        p = new BigInt(prime512[i], 16);
+        q = new BigInt(prime512[j], 16);
     }
     else if (digNum == 1024) {
-        p.readHexNum(prime1024[i]);
-        q.readHexNum(prime1024[j]);
+        p = new BigInt(prime1024[i], 16);
+        q = new BigInt(prime1024[j], 16);
     }
-    LOGLN("Key QuickGenerate");
-    LOGLN("Key: 密钥生成");
-    t = (p - 1) * (q - 1);
+    LOGLN("QuickKey: 密钥生成");
+    BigInt t = ((*p) - 1) * ((*q) - 1);
     BigInt x, y, temp;
     while (1)
     {
@@ -85,11 +84,14 @@ void Key::quickGenerate(int digNum) {
     }
     LOGLN("    公钥e: " << e);
 
-    n = p * q;
+    n = *p * *q;
     LOGLN("    公钥n: " << n);
 
     d = x;
     LOGLN("    私钥d: " << d);
+
+    delete p;
+    delete q;
 }
 
 void Key::getPublicKey(BigInt& N, BigInt& E) const 
@@ -101,10 +103,4 @@ void Key::getPrivateKey(BigInt& N, BigInt& D) const
 {
     N = this->n;
     D = this->d;
-}
-
-//This function should not exist. It just help us to demonstrate our work.
-void Key::getDivNum(BigInt& P, BigInt& Q) const {
-    P = this->p;
-    Q = this->q;
 }

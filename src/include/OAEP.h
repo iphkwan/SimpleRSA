@@ -32,26 +32,19 @@ class OAEP
         OAEP(int k = 16, int m = 32);
         
         /**
-         * 改变k和m
-         *
-         * @param k
-         * @param m
-         */
-        void changeMode(int k, int m);
-        /**
          * OEAP加密
          *
          * @param cnt 明文
          * return 密文
          */
-        BigInt oaep_encode(const BigInt& cnt);
+        BigInt encode(const BigInt& cnt);
         /**
          * OEAP解密
          *
          * @param cnt 密文
          * return 明文
          */
-        BigInt oaep_decode(const BigInt& cnt);
+        BigInt decode(const BigInt& cnt);
 };
 
 #endif
