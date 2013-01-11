@@ -94,7 +94,7 @@ void BigInt::GenFromDecString(string& buf) {
     int len = buf.length();
     unsigned int s1, s2, s3, s4;
     Clear();
-    int i;
+    /*int i;
     int tot = len / 4;
     for(i = 0; i < len / 4; i++) {
         s1 = (unsigned int)buf[i << 2];
@@ -110,6 +110,18 @@ void BigInt::GenFromDecString(string& buf) {
     for(int j = cnt; j < len; j++) {
         data[0] = (data[0] << 8);
         data[0] |= (unsigned int)buf[j];
+    }*/
+    int i, tot = 0;
+    for (i = 0; i < len; i ++) {
+        s1 = s2 = s3 = s4 = 0;
+        s1 = (unsigned int)buf[i ++];
+        if (i < len)
+            s2 = (unsigned int)buf[i ++];
+        if (i < len)
+            s3 = (unsigned int)buf[i ++];
+        if (i < len)
+            s4 = (unsigned int)buf[i ++];
+        data[tot ++] = (s4 << 24) | (s3 << 16) | (s2 << 8) | s1;
     }
 }
 
@@ -118,7 +130,7 @@ string BigInt::ToString() const {
     int len = GetLength();
     unsigned char ch;
     unsigned int f4 = 0xFF, f3 = 0xFF00, f2 = 0xFF0000, f1 = 0xFF000000;
-    for(int i = len - 1; i > 0; i--) {
+    /*for(int i = len - 1; i > 0; i--) {
         ch = (unsigned char)((data[i] & f1) >> 24);
         res += ch;
         ch = (unsigned char)((data[i] & f2) >> 16);
@@ -143,6 +155,22 @@ string BigInt::ToString() const {
     if (data[0] & f4) {
         ch = (unsigned char)(data[0] & f4);
         res += ch;
+    }*/
+    for (int i = 0; i < len - 1; i++) {
+        ch = (unsigned char)(data[i] & f4);
+        res += ch;
+        ch = (unsigned char)((data[i] & f3) >> 8);
+        res += ch;
+        ch = (unsigned char)((data[i] & f2) >> 16);
+        res += ch;
+        ch = (unsigned char)((data[i] & f1) >> 24);
+        res += ch;
+    }
+    unsigned int tmp = data[len - 1];
+    while(tmp) {
+        ch = (unsigned char)(tmp & f4);
+        res += ch;
+        tmp >>= 8;
     }
     return res;
 }
