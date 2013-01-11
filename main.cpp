@@ -35,9 +35,9 @@ int main()
     //test_OAEP();
     //test_OAEP();
     //test_stringTrans();
-    //test_example();
+    test_example();
     //test_primeGen();
-    test_fastKeyGen();
+    //test_fastKeyGen();
     //test_encrypt();
     /*
     BigInt a;
@@ -261,7 +261,7 @@ void test_example() {
 
     clock_t beg = clock();
     if (digNum == 512) {
-        m = 500, k = 11;
+        m = 498, k = 11;
         StringTrans tran(msg, m);
         vector<BigInt> v = tran.getCode();
 
@@ -286,7 +286,7 @@ void test_example() {
         cout << "-------------------------------------------------\n";
     }
     else if (digNum == 768) {
-        m = 700, k = 67;
+        m = 698, k = 67;
         StringTrans tran(msg, m);
         vector<BigInt> v = tran.getCode();
 
@@ -311,7 +311,7 @@ void test_example() {
         cout << "-------------------------------------------------\n";
     }
     else if (digNum == 1024) {
-        m = 900, k = 123;
+        m = 898, k = 123;
         StringTrans tran(msg, m);
         vector<BigInt> v = tran.getCode();
 
@@ -336,7 +336,7 @@ void test_example() {
         cout << "-------------------------------------------------\n";
     }
     else if (digNum == 2048) {
-        m = 1800, k = 247;
+        m = 1798, k = 247;
         StringTrans tran(msg, m);
         vector<BigInt> v = tran.getCode();
 

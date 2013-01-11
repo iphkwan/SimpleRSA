@@ -7,6 +7,7 @@
 #include "utils.h"
 using namespace std;
 
+// map k bits number to m bits number.(k << m)
 BigInt OAEP::k_to_m(const BigInt& cnt) {
     //cnt have k bits
     BigInt res(cnt), tmp(cnt);
@@ -16,6 +17,8 @@ BigInt OAEP::k_to_m(const BigInt& cnt) {
     }
     return res;
 }
+
+// map m bits number to k bits number. (m >> k)
 BigInt OAEP::m_to_k(const BigInt& cnt) {
     //the digits of cnt must more than k
     BigInt filter(1), res(0), tmp(cnt);
