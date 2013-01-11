@@ -5,6 +5,7 @@
 #include "Key.h"
 #include <ctime>
 #include "utils.h"
+#include <cstdio>
 using namespace std;
 
 BigInt OAEP::k_to_m(const BigInt& cnt) {
@@ -38,6 +39,10 @@ OAEP::OAEP(int k, int m) {
 }
 
 BigInt OAEP::encode(const BigInt& cnt) {
+    if (cnt.GetBitLength() > M) {
+        fprintf(stderr, "OAEP Error: Message out of range. Length is %d\n", cnt.GetBitLength());
+        exit(EXIT_FAILURE);
+    }
     BigInt r, tmp, P1, P2;
     srand((unsigned) time(NULL));
     r.Random(K);

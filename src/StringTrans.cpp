@@ -35,6 +35,7 @@ string StringTrans::toHexString() {
 }
 
 string StringTrans::toString() {
+    /*
     int len = this->size();
     string res, tmp;
     for (int i = 0; i < len; i++) {
@@ -42,5 +43,6 @@ string StringTrans::toString() {
         res = res + tmp;
     }
     return res;
-
+    */
+    return msg;
 }

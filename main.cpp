@@ -91,15 +91,15 @@ void test_message() {
     cout << "Model[256|512|768|1024|2048]: ";
     cin >> model;
 
-    RSA rsa(model);
-    StringTrans st(msg, model - 26);
+    RSA rsa(model, true);
+    StringTrans st(msg, model - 17);
     
     BigInt N, E, D;
     rsa.getPublicKey(N, E);
 
     cout << "Message is " << st.toString() << endl;
 
-    OAEP oaep(16, model - 26);
+    OAEP oaep(16, model - 17);
     for (int i = 0; i < st.size(); ++ i) {
         st[i] = oaep.encode(st[i]);
     }
