@@ -18,7 +18,7 @@ void StringTrans::split() {
     do
     {
         string segment = msg.substr(n * StrLen, StrLen);
-        push_back(BigInt(segment, 10));
+        push_back(BigInt(segment, 16));
         n++;
     }
     while (n * StrLen < msg.length());
