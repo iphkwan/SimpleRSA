@@ -120,7 +120,7 @@ void BigInt::GenFromDecString(string& buf) {
         if (i < len)
             s3 = (unsigned int)buf[i ++];
         if (i < len)
-            s4 = (unsigned int)buf[i ++];
+            s4 = (unsigned int)buf[i];
         data[tot ++] = (s4 << 24) | (s3 << 16) | (s2 << 8) | s1;
     }
 }
