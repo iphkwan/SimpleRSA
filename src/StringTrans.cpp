@@ -7,11 +7,11 @@
 #include "utils.h"
 using namespace std;
 
-StringTrans::StringTrans(const string& a, int b) : msg(a), BitLen(b){
-    this->split();
+StringTrans::StringTrans(const string& a, int b) {
+    this->split(a, b);
 }
 
-void StringTrans::split() {
+void StringTrans::split(const string& msg, int BitLen) {
     int n = 0;
     int StrLen = BitLen / 8;
     (*this).clear();
@@ -35,7 +35,6 @@ string StringTrans::toHexString() {
 }
 
 string StringTrans::toString() {
-    /*
     int len = this->size();
     string res, tmp;
     for (int i = 0; i < len; i++) {
@@ -43,6 +42,4 @@ string StringTrans::toString() {
         res = res + tmp;
     }
     return res;
-    */
-    return msg;
 }

@@ -7,14 +7,11 @@ using namespace std;
 
 class StringTrans : public vector<BigInt> {
     private:
-        string msg;
-        int BitLen;
-
         /**
          * 对储存的str进行分段，每段BitLen长
          *
          */
-        void split();
+        void split(const string&, int);
 
     public:
         /**
