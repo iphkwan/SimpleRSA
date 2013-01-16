@@ -14,8 +14,6 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
-    string msg;
-    getline(cin, msg);
 
     int keyLength = atoi(argv[1]);
     
@@ -34,11 +32,14 @@ int main(int argc, char **argv) {
             exit(EXIT_FAILURE);
     }
 
+    string msg;
+    getline(cin, msg);
+
     StringTrans st(msg, keyLength - 19);
     cout << "Input Message: " << endl;
     cout << st.toString() << endl;
 
-    RSA rsa(keyLength, true);
+    RSA rsa(keyLength);
     OAEP oaep(16, keyLength - 19);   
 
     BigInt N, E;

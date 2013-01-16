@@ -16,7 +16,7 @@ class RSA
          * @param digNum 密钥长度
          * @param fast 是否采取快速生成素数
          */
-        RSA(int digNum = 512, bool fast = false) : key(digNum / 2, fast) {};
+        RSA(int digNum = 512) : key(digNum / 2) {};
         
         /**
          * 已知n, e, d
