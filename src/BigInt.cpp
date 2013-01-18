@@ -32,13 +32,13 @@ BigInt::BigInt(const BigInt& input)
 
 BigInt::BigInt(string str, int base) {
     switch (base) {
-        case 2:
+        case BIN_STRING:
             GenFromBinString(str);
             break;
-        case 10:
-            GenFromDecString(str);
+        case BYTE_STRING:
+            GenFromByteString(str);
             break;
-        case 16:
+        case HEX_STRING:
             GenFromHexString(str);
             break;
         default:
@@ -90,85 +90,42 @@ void BigInt::GenFromBinString(string str)
     data[index] = cur;
 }
 
-void BigInt::GenFromDecString(string& buf) {
+void BigInt::GenFromByteString(const string& buf) {
     int len = buf.length();
-    unsigned int s1, s2, s3, s4;
+    int s1, s2, s3, s4;
     Clear();
-    /*int i;
-    int tot = len / 4;
-    for(i = 0; i < len / 4; i++) {
-        s1 = (unsigned int)buf[i << 2];
-        s2 = (unsigned int)buf[i << 2 | 1];
-        s3 = (unsigned int)buf[i << 2 | 2];
-        s4 = (unsigned int)buf[i << 2 | 3];
-        if (len % 4 == 0)
-            data[tot - i - 1] = (s1 << 24) | (s2 << 16) | (s3 << 8) | s4;
-        else
-            data[tot - i] = (s1 << 24) | (s2 << 16) | (s3 << 8) | s4;
-    }
-    int cnt = i * 4;
-    for(int j = cnt; j < len; j++) {
-        data[0] = (data[0] << 8);
-        data[0] |= (unsigned int)buf[j];
-    }*/
-    int i, tot = 0;
-    for (i = 0; i < len; i ++) {
-        s1 = s2 = s3 = s4 = 0;
-        s1 = (unsigned int)buf[i ++];
-        if (i < len)
-            s2 = (unsigned int)buf[i ++];
-        if (i < len)
-            s3 = (unsigned int)buf[i ++];
-        if (i < len)
-            s4 = (unsigned int)buf[i];
-        data[tot ++] = (s4 << 24) | (s3 << 16) | (s2 << 8) | s1;
+    int mask[] = {0, 8, 16, 24};
+    int validmsk = 0xff;
+    size_t curmsk = 0, cur = 0;
+    for (int i = 0; i < buf.size(); ++ i) {
+        int tmp = (int) buf[i];
+        data[cur] |= ((tmp << mask[curmsk]) & (validmsk << mask[curmsk]));
+        curmsk ++;
+        if (curmsk == 4) {
+            curmsk = 0;
+            cur ++;
+        }
     }
 }
-
 string BigInt::ToString() const {
     string res;
     int len = GetLength();
-    unsigned char ch;
+    char ch;
     unsigned int f4 = 0xFF, f3 = 0xFF00, f2 = 0xFF0000, f1 = 0xFF000000;
-    /*for(int i = len - 1; i > 0; i--) {
-        ch = (unsigned char)((data[i] & f1) >> 24);
-        res += ch;
-        ch = (unsigned char)((data[i] & f2) >> 16);
-        res += ch;
-        ch = (unsigned char)((data[i] & f3) >> 8);
-        res += ch;
-        ch = (unsigned char)(data[i] & f4);
-        res += ch;
-    }
-    if (data[0] & f1) {
-        ch = (unsigned char)((data[0] & f1) >> 24);
-        res += ch;
-    }
-    if (data[0] & f2) {
-        ch = (unsigned char)((data[0] & f2) >> 16);
-        res += ch;
-    }
-    if (data[0] & f3) {
-        ch = (unsigned char)((data[0] & f3) >> 8);
-        res += ch;
-    }
-    if (data[0] & f4) {
-        ch = (unsigned char)(data[0] & f4);
-        res += ch;
-    }*/
+    
     for (int i = 0; i < len - 1; i++) {
-        ch = (unsigned char)(data[i] & f4);
+        ch = (char)(data[i] & f4);
         res += ch;
-        ch = (unsigned char)((data[i] & f3) >> 8);
+        ch = (char)((data[i] & f3) >> 8);
         res += ch;
-        ch = (unsigned char)((data[i] & f2) >> 16);
+        ch = (char)((data[i] & f2) >> 16);
         res += ch;
-        ch = (unsigned char)((data[i] & f1) >> 24);
+        ch = (char)((data[i] & f1) >> 24);
         res += ch;
     }
     unsigned int tmp = data[len - 1];
     while(tmp) {
-        ch = (unsigned char)(tmp & f4);
+        ch = (char)(tmp & f4);
         res += ch;
         tmp >>= 8;
     }

@@ -15,7 +15,7 @@ int main(int argc, char **argv) {
     }
 
     int keyLength;
-    if (string(argv[1]) != "fastTest") {
+    if (string(argv[1]) != "fast") {
         keyLength = atoi(argv[1]);
         
         if (keyLength < 256) {
@@ -34,7 +34,7 @@ int main(int argc, char **argv) {
                 exit(EXIT_FAILURE);
         }
     }
-    else if (string(argv[1]) == "fastTest") {
+    else if (string(argv[1]) == "fast") {
         keyLength = -1;
     }
     else {

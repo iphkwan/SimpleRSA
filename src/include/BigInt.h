@@ -50,11 +50,11 @@ public:
     void GenFromBinString(string buf);
 
     /**
-     * 从10进制字符串读入数据
+     * 从字节串读入数据
      *
-     * @param buf  10进制字符串
+     * @param buf  字节串
      */
-    void GenFromDecString(string& buf);
+    void GenFromByteString(const string& buf);
 
     /**
      * 把大数转换成10进制字符串
@@ -224,6 +224,12 @@ private:
 
     int _hexCharToInt(char c);
     char _intToHexChar(int c);
+};
+
+enum _STRING_TYPE {
+    BIN_STRING = 2,
+    HEX_STRING = 16,
+    BYTE_STRING = 10
 };
 
 #endif
