@@ -76,12 +76,11 @@ BigInt GeneratePrime(int digNum)
 {
     BigInt n;
     int i = 0;
-    LOGLN("GeneratePrime 生成素数 ..");
+    LOG("GeneratePrime 生成素数 ");
     while (i < 5)
     {
         //产生一个待测素数
         GenPrime(n, digNum);
-        LOGLN("    待测数: " << n);
         i = 0;
         //进行五轮ROBINMILLER测试,五轮全部通过则素数合格
         //理论素数合格率达99.9%
@@ -89,11 +88,11 @@ BigInt GeneratePrime(int digNum)
         {
             if (!RabinMiller(n, digNum))
             {
-                LOGLN("    Rabin-Miller测试失败");
+                LOG(".");
                 break;
             }
         }
     }
-    LOGLN("    Rabin-Miller测试成功: " << n);
+    LOGLN("\n    " << n);
     return n;
 }

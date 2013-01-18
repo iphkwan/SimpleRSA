@@ -2,6 +2,7 @@
 #define OAEP_H_
 
 #include "BigInt.h"
+#include "StringTrans.h"
 
 class OAEP
 {
@@ -38,6 +39,7 @@ class OAEP
          * return 密文
          */
         BigInt encode(const BigInt& cnt);
+        void encode(StringTrans& st);
         /**
          * OEAP解密
          *
@@ -45,6 +47,7 @@ class OAEP
          * return 明文
          */
         BigInt decode(const BigInt& cnt);
+        void decode(StringTrans& st);
 };
 
 #endif

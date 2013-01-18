@@ -6,6 +6,7 @@
 #include <ctime>
 #include "utils.h"
 #include <cstdio>
+#include <algorithm>
 using namespace std;
 
 // map k bits number to m bits number.(k << m)
@@ -81,4 +82,17 @@ BigInt OAEP::decode(const BigInt& cnt) {
     tmp = k_to_m(r);
     res = (tmp ^ P1);
     return res;
+}
+
+void OAEP::encode(StringTrans& st) {
+    for (StringTrans::iterator itr = st.begin(); itr != st.end(); ++ itr) {
+        cout << itr->GetBitLength() << endl;
+        *itr = encode(*itr);
+    }
+}
+
+void OAEP::decode(StringTrans& st) {
+    for (StringTrans::iterator itr = st.begin(); itr != st.end(); ++ itr) {
+        *itr = decode(*itr);
+    }
 }

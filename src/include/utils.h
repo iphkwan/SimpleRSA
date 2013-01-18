@@ -8,7 +8,7 @@
 
 #if debug
     #define LOGLN(msg) std::cout << msg << std::endl
-    #define LOG(msg) std::cout << msg
+    #define LOG(msg) std::cout << msg << flush
 #else
     #define LOGLN(msg) 
     #define LOG(msg)

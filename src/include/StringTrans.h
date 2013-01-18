@@ -11,7 +11,8 @@ class StringTrans : public vector<BigInt> {
          * 对储存的str进行分段，每段BitLen长
          *
          */
-        void split(const string&, int);
+        void split(const string&);
+        int BitLen;
 
     public:
         /**
@@ -28,6 +29,15 @@ class StringTrans : public vector<BigInt> {
          */
         string toString();
         string toHexString();
+
+        /**
+         * 各种合并函数
+         */
+        void push_back(const string&);
+        void push_back(const BigInt&);
+        StringTrans& operator+= (const string&);
+        StringTrans& operator+= (const BigInt&);
+        StringTrans& operator+= (const StringTrans&);
 };
 
 #endif
