@@ -86,7 +86,6 @@ BigInt OAEP::decode(const BigInt& cnt) {
 
 void OAEP::encode(StringTrans& st) {
     for (StringTrans::iterator itr = st.begin(); itr != st.end(); ++ itr) {
-        cout << itr->GetBitLength() << endl;
         *itr = encode(*itr);
     }
 }

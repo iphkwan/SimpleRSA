@@ -8,8 +8,8 @@
 using namespace std;
 
 StringTrans::StringTrans(const string& a, int b) {
-    this->split(a);
     this->BitLen = b;
+    this->split(a);
 }
 
 void StringTrans::split(const string& msg) {
