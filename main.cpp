@@ -42,6 +42,8 @@ int main(int argc, char **argv) {
         exit(EXIT_FAILURE);
     }
 
+    cout << "Please input your message:\n";
+
     string msg;
     getline(cin, msg);
 
